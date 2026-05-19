@@ -37,7 +37,7 @@ function QuotePage() {
         <br />
         <span className="italic text-primary">We&apos;ll reply within 48 hours.</span>
       </h1>
-      <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-foreground/75">
+      <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-[#555555]">
         Tell us about the sofa, the room, the fabric you have in mind. The more details, the more
         accurate our quote and sketch.
       </p>
@@ -45,7 +45,7 @@ function QuotePage() {
       {sent ? (
         <div className="mt-16 rounded-sm border border-primary/30 bg-primary/5 p-12 text-center">
           <h2 className="font-display text-4xl">Request received.</h2>
-          <p className="mt-4 text-foreground/75">
+          <p className="mt-4 text-[#555555]">
             One of our designers will contact you within two business days with a quote and an
             initial sketch.
           </p>
@@ -123,7 +123,7 @@ function QuotePage() {
             </p>
             <button
               type="submit"
-              className="rounded-sm bg-foreground px-10 py-4 text-xs uppercase tracking-[0.2em] text-background transition-colors hover:bg-primary"
+              className="rounded-sm bg-primary px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
             >
               Submit Request
             </button>

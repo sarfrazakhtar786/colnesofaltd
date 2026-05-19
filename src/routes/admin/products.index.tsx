@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { getPublicImageUrl } from "@/lib/images";
 import { Plus, Edit, Trash2, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -77,7 +78,7 @@ function AdminProducts() {
                   <tr key={product.id}>
                     <td className="px-4 py-3">
                       <img
-                        src={product.image_url}
+                        src={getPublicImageUrl(product.image_url)}
                         alt={product.name}
                         className="h-12 w-12 object-cover rounded border"
                       />

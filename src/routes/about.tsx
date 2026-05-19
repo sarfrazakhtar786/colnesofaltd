@@ -69,7 +69,7 @@ function AboutPage() {
         <h1 className="mt-6 text-balance font-display text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
           {aboutHeroTitle}
         </h1>
-        <p className="mx-auto mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/75">
+        <p className="mx-auto mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-[#555555]">
           {aboutHeroSubtitle}
         </p>
       </section>
@@ -96,14 +96,14 @@ function AboutPage() {
             {values.map((v: any, i: number) => (
               <div key={i} className="border-l-2 border-primary pl-6">
                 <h3 className="font-display text-2xl">{v.t}</h3>
-                <p className="mt-3 text-pretty leading-relaxed text-foreground/75">{v.d}</p>
+                <p className="mt-3 text-pretty leading-relaxed text-[#555555]">{v.d}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-foreground py-24 text-background">
+      <section className="bg-[#111111] py-24 text-white">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-6 text-center lg:grid-cols-4 lg:px-10">
           {[
             { n: "46", l: "Years of practice" },
@@ -113,7 +113,7 @@ function AboutPage() {
           ].map((s) => (
             <div key={s.l}>
               <p className="font-display text-5xl text-primary">{s.n}</p>
-              <p className="mt-3 text-xs uppercase tracking-widest text-background/70">{s.l}</p>
+              <p className="mt-3 text-xs uppercase tracking-widest text-white/70">{s.l}</p>
             </div>
           ))}
         </div>

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { getPublicImageUrl } from "@/lib/images";
 import { ArrowLeft, ArrowUpRight, Loader2, Check } from "lucide-react";
 
 export const Route = createFileRoute("/collection/$slug")({
@@ -38,25 +39,29 @@ function SofaDetailPage() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Link
           to="/collection"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-foreground/50 transition-colors hover:text-primary"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#555555] transition-colors hover:text-primary"
         >
           <ArrowLeft className="h-3 w-3" /> Back to Collection
         </Link>
 
         <div className="mt-12 grid gap-16 lg:grid-cols-2 lg:items-start">
           {/* Image Gallery */}
-          <div className="aspect-[4/5] overflow-hidden bg-muted lg:sticky lg:top-32">
-            <img src={sofa.image_url} alt={sofa.name} className="h-full w-full object-cover" />
+          <div className="aspect-[4/5] overflow-hidden border border-primary/25 bg-card p-3 shadow-[0_16px_45px_rgba(11,27,58,0.06)] lg:sticky lg:top-32">
+            <img
+              src={getPublicImageUrl(sofa.image_url)}
+              alt={sofa.name}
+              className="h-full w-full object-cover"
+            />
           </div>
 
           {/* Details */}
           <div className="flex flex-col">
             <p className="eyebrow">{sofa.category || "Atelier Collection"}</p>
             <h1 className="mt-4 font-display text-5xl italic sm:text-6xl">{sofa.name}</h1>
-            <p className="mt-6 text-2xl font-light text-foreground/80">{sofa.price}</p>
+            <p className="mt-6 text-2xl font-semibold text-primary">{sofa.price}</p>
 
             <div className="mt-12 space-y-8 border-t border-border/60 pt-10">
-              <p className="text-lg leading-relaxed text-foreground/70">{sofa.description}</p>
+              <p className="text-lg leading-relaxed text-[#555555]">{sofa.description}</p>
 
               {/* DIMENSIONS */}
               <div className="grid grid-cols-3 gap-8 py-6 border-y border-border/40">
@@ -90,7 +95,7 @@ function SofaDetailPage() {
                     ? sofa.materials.split(",")
                     : ["Solid hardwood frame", "Hand-tied springs", "Ethically sourced fill"]
                   ).map((m: string) => (
-                    <li key={m} className="flex items-center gap-3 text-sm text-foreground/70">
+                    <li key={m} className="flex items-center gap-3 text-sm text-[#555555]">
                       <span className="h-1 w-1 rounded-full bg-primary" />
                       {m.trim()}
                     </li>
@@ -102,7 +107,7 @@ function SofaDetailPage() {
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/quote"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-sm bg-foreground px-8 py-4 text-xs uppercase tracking-[0.2em] text-background transition-colors hover:bg-primary sm:flex-none"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent sm:flex-none"
               >
                 Request a Quote
                 <ArrowUpRight className="h-4 w-4" />

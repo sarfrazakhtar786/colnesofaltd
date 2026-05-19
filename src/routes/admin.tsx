@@ -1,11 +1,39 @@
-import { createFileRoute, Outlet, Link, redirect } from "@tanstack/react-router";
-import { LayoutDashboard, ShoppingBag, Home, Settings, LogOut } from "lucide-react";
+import { createFileRoute, Outlet, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { LayoutDashboard, ShoppingBag, Home, LogOut } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: async ({ location }) => {
+    const { data } = await supabase.auth.getSession();
+
+    if (!data.session) {
+      throw redirect({
+        to: "/admin-login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
   component: AdminLayout,
 });
 
 function AdminLayout() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("Admin");
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user?.email) setEmail(data.user.email);
+    });
+  }, []);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    navigate({ to: "/admin-login" });
+  }
+
   return (
     <div className="flex min-h-screen bg-muted/30">
       {/* Sidebar */}
@@ -41,7 +69,10 @@ function AdminLayout() {
             Page Content
           </Link>
           <div className="pt-4 mt-4 border-t">
-            <button className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors text-destructive w-full text-left">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors text-destructive w-full text-left"
+            >
               <LogOut className="h-4 w-4" />
               Logout
             </button>
@@ -54,7 +85,7 @@ function AdminLayout() {
         <header className="h-16 border-b bg-background flex items-center px-8 justify-between">
           <h2 className="font-semibold text-lg">Admin Control Panel</h2>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground italic">Logged in as Admin</span>
+            <span className="text-sm text-muted-foreground italic">Logged in as {email}</span>
           </div>
         </header>
         <div className="p-8">

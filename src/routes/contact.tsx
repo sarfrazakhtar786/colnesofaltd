@@ -34,7 +34,7 @@ function ContactPage() {
         <aside className="space-y-10 lg:col-span-4">
           <div>
             <p className="eyebrow">Showroom</p>
-            <p className="mt-3 flex items-start gap-3 text-foreground/80">
+            <p className="mt-3 flex items-start gap-3 text-[#555555]">
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <span>
                 14 Rue de l&apos;Artisan
@@ -46,7 +46,7 @@ function ContactPage() {
           </div>
           <div>
             <p className="eyebrow">Email</p>
-            <p className="mt-3 flex items-center gap-3 text-foreground/80">
+            <p className="mt-3 flex items-center gap-3 text-[#555555]">
               <Mail className="h-5 w-5 text-primary" />
               <a href="mailto:hello@colnesofa.com" className="hover:text-primary">
                 hello@colnesofa.com
@@ -55,7 +55,7 @@ function ContactPage() {
           </div>
           <div>
             <p className="eyebrow">Phone</p>
-            <p className="mt-3 flex items-center gap-3 text-foreground/80">
+            <p className="mt-3 flex items-center gap-3 text-[#555555]">
               <Phone className="h-5 w-5 text-primary" />
               <a href="tel:+33142000000" className="hover:text-primary">
                 +33 1 42 00 00 00
@@ -74,7 +74,7 @@ function ContactPage() {
           {sent ? (
             <div className="rounded-sm border border-primary/30 bg-primary/5 p-10 text-center">
               <h2 className="font-display text-3xl">Thank you.</h2>
-              <p className="mt-3 text-foreground/75">
+              <p className="mt-3 text-[#555555]">
                 We&apos;ll be in touch within two business days.
               </p>
             </div>
@@ -98,7 +98,7 @@ function ContactPage() {
               </div>
               <button
                 type="submit"
-                className="mt-4 rounded-sm bg-foreground px-8 py-4 text-xs uppercase tracking-[0.2em] text-background transition-colors hover:bg-primary"
+                className="mt-4 rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
               >
                 Send Message
               </button>

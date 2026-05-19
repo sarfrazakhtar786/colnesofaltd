@@ -40,36 +40,35 @@
 :root {
   --radius: 0.25rem;
 
-  /* Warm editorial palette */
-  --background: oklch(0.972 0.012 85); /* warm cream */
-  --foreground: oklch(0.235 0.025 60); /* deep ink brown */
-  --cream: oklch(0.97 0.014 80);
-  --ink: oklch(0.18 0.02 60);
+  --background: #f7f4ee;
+  --foreground: #0b1b3a;
+  --cream: #f7f4ee;
+  --ink: #111111;
 
-  --card: oklch(0.985 0.008 85);
-  --card-foreground: oklch(0.235 0.025 60);
-  --popover: oklch(0.985 0.008 85);
-  --popover-foreground: oklch(0.235 0.025 60);
+  --card: #ffffff;
+  --card-foreground: #0b1b3a;
+  --popover: #ffffff;
+  --popover-foreground: #0b1b3a;
 
-  --primary: oklch(0.45 0.105 45); /* terracotta clay */
-  --primary-foreground: oklch(0.97 0.014 80);
-  --clay: oklch(0.55 0.135 40);
+  --primary: #c9a227;
+  --primary-foreground: #0b1b3a;
+  --clay: #c9a227;
 
-  --secondary: oklch(0.92 0.022 75); /* warm sand */
-  --secondary-foreground: oklch(0.235 0.025 60);
+  --secondary: #0b1b3a;
+  --secondary-foreground: #ffffff;
 
-  --muted: oklch(0.93 0.018 78);
-  --muted-foreground: oklch(0.45 0.02 60);
+  --muted: #e8ddcf;
+  --muted-foreground: #555555;
 
-  --accent: oklch(0.88 0.04 70); /* camel */
-  --accent-foreground: oklch(0.235 0.025 60);
+  --accent: #e0bb4f;
+  --accent-foreground: #0b1b3a;
 
-  --destructive: oklch(0.55 0.2 27);
+  --destructive: #b42318;
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(0.88 0.018 75);
-  --input: oklch(0.88 0.018 75);
-  --ring: oklch(0.45 0.105 45);
+  --border: #d8ccb9;
+  --input: #d8ccb9;
+  --ring: #c9a227;
 }
 
 @layer base {
@@ -78,7 +77,7 @@
   }
   body {
     background-color: var(--color-background);
-    color: var(--color-foreground);
+    color: #555555;
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02";
     -webkit-font-smoothing: antialiased;
@@ -91,6 +90,7 @@
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: -0.02em;
+    color: var(--color-foreground);
   }
   .font-display {
     font-family: var(--font-display);

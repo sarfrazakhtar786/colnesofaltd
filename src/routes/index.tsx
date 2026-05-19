@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { getPublicImageUrl } from "@/lib/images";
 import heroSofaDefault from "@/assets/hero-sofa.jpg";
 import craftsman from "@/assets/craftsman.jpg";
 import { ArrowUpRight, Loader2 } from "lucide-react";
@@ -56,36 +57,36 @@ function HomePage() {
   return (
     <>
       {/* HERO BANNER */}
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate overflow-hidden bg-background">
         <img
-          src={heroImage}
+          src={getPublicImageUrl(heroImage)}
           alt="The Luna Curve sofa"
           width={1920}
           height={1280}
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          className="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-90 lg:w-[62%]"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/92 via-45% to-background/20" />
 
-        <div className="mx-auto grid min-h-[88vh] max-w-7xl grid-cols-1 items-center px-6 py-24 lg:px-10">
+        <div className="mx-auto grid min-h-[82vh] max-w-7xl grid-cols-1 items-center px-6 py-24 lg:px-10">
           <div className="max-w-2xl">
             <p className="eyebrow">Atelier · Paris · Est. 1978</p>
             <h1 className="mt-6 text-balance font-display text-5xl leading-[1.05] text-foreground sm:text-6xl lg:text-7xl">
               {heroTitle}
             </h1>
-            <p className="mt-7 max-w-lg text-pretty text-base leading-relaxed text-foreground/75 sm:text-lg">
+            <p className="mt-7 max-w-lg text-pretty text-base leading-relaxed text-[#555555] sm:text-lg">
               {heroSubtitle}
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/collection"
-                className="group inline-flex items-center gap-2 rounded-sm bg-foreground px-7 py-4 text-xs uppercase tracking-[0.2em] text-background transition-all hover:bg-primary"
+                className="group inline-flex items-center gap-2 rounded-sm bg-primary px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground shadow-sm transition-all hover:bg-accent"
               >
                 See the Collection
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
                 to="/quote"
-                className="inline-flex items-center gap-2 rounded-sm border border-foreground px-7 py-4 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:bg-foreground hover:text-background"
+                className="inline-flex items-center gap-2 rounded-sm bg-secondary px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-secondary-foreground transition-colors hover:bg-[#142857]"
               >
                 Request a Custom Quote
               </Link>
@@ -103,7 +104,7 @@ function HomePage() {
               We believe a sofa should outlive its trend.
             </h2>
           </div>
-          <div className="space-y-6 text-pretty text-base leading-relaxed text-foreground/80 lg:col-span-6 lg:col-start-7">
+          <div className="space-y-6 text-pretty text-base leading-relaxed text-[#555555] lg:col-span-6 lg:col-start-7">
             <p>
               Colne Sofa LTD was founded in 1978 by Élise Marchand, a Parisian upholsterer who
               refused to compromise on materials or time. Forty-six years later, our team of
@@ -119,7 +120,7 @@ function HomePage() {
       </section>
 
       {/* FEATURED COLLECTION */}
-      <section className="bg-secondary/40 py-28">
+      <section className="bg-muted/45 py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
@@ -128,7 +129,7 @@ function HomePage() {
             </div>
             <Link
               to="/collection"
-              className="group inline-flex items-center gap-2 text-sm uppercase tracking-widest text-primary"
+              className="group inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-primary"
             >
               View All
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -142,11 +143,11 @@ function HomePage() {
                   key={s.id}
                   to="/collection/$slug"
                   params={{ slug: s.slug }}
-                  className="group block"
+                  className="group block rounded-sm border border-primary/25 bg-card p-3 shadow-[0_16px_45px_rgba(11,27,58,0.06)] transition-transform duration-300 hover:-translate-y-1"
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-muted">
                     <img
-                      src={s.image_url}
+                      src={getPublicImageUrl(s.image_url)}
                       alt={s.name}
                       width={1280}
                       height={1024}
@@ -154,9 +155,9 @@ function HomePage() {
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="mt-5 flex items-baseline justify-between gap-3">
+                  <div className="mt-5 flex items-baseline justify-between gap-3 px-1 pb-1">
                     <h3 className="font-display text-2xl">{s.name}</h3>
-                    <span className="text-sm text-muted-foreground">{s.price}</span>
+                    <span className="text-sm font-semibold text-primary">{s.price}</span>
                   </div>
                 </Link>
               ))
@@ -189,7 +190,7 @@ function HomePage() {
               <br />
               <span className="italic text-primary">One sofa at a time.</span>
             </h2>
-            <p className="mt-6 text-pretty leading-relaxed text-foreground/80">
+            <p className="mt-6 text-pretty leading-relaxed text-[#555555]">
               From the first cut of beech to the final hand-stitched seam, every Colne Sofa LTD sofa
               passes through fourteen artisans over an average of 84 hours of work.
             </p>
@@ -217,18 +218,18 @@ function HomePage() {
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-6 pb-12 lg:px-10">
-        <div className="rounded-sm bg-foreground px-8 py-20 text-center text-background sm:px-16 sm:py-28">
-          <p className="eyebrow text-background/60">Bespoke</p>
-          <h2 className="mx-auto mt-4 max-w-2xl text-balance font-display text-4xl leading-tight sm:text-5xl">
+        <div className="rounded-sm bg-[#111111] px-8 py-20 text-center text-white sm:px-16 sm:py-28">
+          <p className="eyebrow text-primary">Bespoke</p>
+          <h2 className="mx-auto mt-4 max-w-2xl text-balance font-display text-4xl leading-tight text-white sm:text-5xl">
             Have something specific in mind?
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-background/70">
+          <p className="mx-auto mt-5 max-w-xl text-white/70">
             Tell us about the room, the fabric, the dimensions. We&apos;ll come back within two days
             with a quote and a sketch.
           </p>
           <Link
             to="/quote"
-            className="mt-10 inline-flex items-center gap-2 rounded-sm bg-background px-8 py-4 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+            className="mt-10 inline-flex items-center gap-2 rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
           >
             Request a Quote
             <ArrowUpRight className="h-4 w-4" />

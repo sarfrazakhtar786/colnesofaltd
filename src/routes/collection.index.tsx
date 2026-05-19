@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { getPublicImageUrl } from "@/lib/images";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/collection/")({
@@ -54,7 +55,7 @@ function CollectionPage() {
           <h1 className="mt-8 font-display text-4xl leading-[1.1] text-foreground sm:text-5xl lg:text-6xl">
             {collectionTitle}
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-foreground/60">
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-[#555555]">
             {collectionDescription}
           </p>
         </header>
@@ -66,21 +67,21 @@ function CollectionPage() {
                 key={sofa.id}
                 to="/collection/$slug"
                 params={{ slug: sofa.slug }}
-                className="group"
+                className="group rounded-sm border border-primary/25 bg-card p-3 shadow-[0_16px_45px_rgba(11,27,58,0.06)] transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="aspect-[4/5] overflow-hidden bg-muted">
                   <img
-                    src={sofa.image_url}
+                    src={getPublicImageUrl(sofa.image_url)}
                     alt={sofa.name}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 px-1 pb-2">
                   <div className="flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-2xl italic">{sofa.name}</h3>
-                    <p className="text-sm font-medium text-foreground/60">{sofa.price}</p>
+                    <p className="text-sm font-semibold text-primary">{sofa.price}</p>
                   </div>
-                  <p className="mt-2 text-sm text-foreground/50 line-clamp-2">{sofa.description}</p>
+                  <p className="mt-2 text-sm text-[#555555] line-clamp-2">{sofa.description}</p>
                 </div>
               </Link>
             ))
