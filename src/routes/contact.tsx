@@ -1,17 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
+import { contactDetails } from "@/lib/contact";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Colne Sofa LTD" },
+      { title: "Contact - Colne Sofa LTD" },
       {
         name: "description",
-        content: "Visit our Parisian showroom or get in touch with the atelier.",
+        content: "Visit Colne Sofa LTD or get in touch with the team.",
       },
-      { property: "og:title", content: "Contact — Colne Sofa LTD" },
-      { property: "og:description", content: "Reach our Paris atelier and showroom." },
+      { property: "og:title", content: "Contact - Colne Sofa LTD" },
+      { property: "og:description", content: "Reach the Colne Sofa LTD team." },
     ],
   }),
   component: ContactPage,
@@ -37,19 +38,21 @@ function ContactPage() {
             <p className="mt-3 flex items-start gap-3 text-[#555555]">
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <span>
-                14 Rue de l&apos;Artisan
-                <br />
-                75011 Paris, France
+                {contactDetails.addressLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
               </span>
             </p>
-            <p className="mt-3 text-sm text-muted-foreground">Tue–Sat · 10:00 — 19:00</p>
+            <p className="mt-3 text-sm text-muted-foreground">{contactDetails.hours}</p>
           </div>
           <div>
             <p className="eyebrow">Email</p>
             <p className="mt-3 flex items-center gap-3 text-[#555555]">
               <Mail className="h-5 w-5 text-primary" />
-              <a href="mailto:hello@colnesofa.com" className="hover:text-primary">
-                hello@colnesofa.com
+              <a href={`mailto:${contactDetails.email}`} className="hover:text-primary">
+                {contactDetails.email}
               </a>
             </p>
           </div>
@@ -57,8 +60,8 @@ function ContactPage() {
             <p className="eyebrow">Phone</p>
             <p className="mt-3 flex items-center gap-3 text-[#555555]">
               <Phone className="h-5 w-5 text-primary" />
-              <a href="tel:+33142000000" className="hover:text-primary">
-                +33 1 42 00 00 00
+              <a href={contactDetails.phoneHref} className="hover:text-primary">
+                {contactDetails.phoneDisplay}
               </a>
             </p>
           </div>

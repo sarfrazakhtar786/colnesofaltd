@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { contactDetails } from "@/lib/contact";
 
 export function SiteFooter() {
   return (
@@ -42,17 +43,26 @@ export function SiteFooter() {
         <div>
           <p className="eyebrow text-primary">Visit</p>
           <ul className="mt-4 space-y-2 text-sm text-white/72">
-            <li>14 Rue de l&apos;Artisan</li>
-            <li>75011 Paris, France</li>
-            <li>hello@colnesofa.com</li>
-            <li>+33 1 42 00 00 00</li>
+            {contactDetails.addressLines.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+            <li>
+              <a href={`mailto:${contactDetails.email}`} className="transition-colors hover:text-primary">
+                {contactDetails.email}
+              </a>
+            </li>
+            <li>
+              <a href={contactDetails.phoneHref} className="transition-colors hover:text-primary">
+                {contactDetails.phoneDisplay}
+              </a>
+            </li>
           </ul>
         </div>
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 text-xs text-white/55 md:flex-row lg:px-10">
           <p>&copy; {new Date().getFullYear()} Colne Sofa LTD. All rights reserved.</p>
-          <p>Crafted in France &middot; Shipped worldwide</p>
+          <p>Based in the UK &middot; Shipped worldwide</p>
         </div>
       </div>
     </footer>
