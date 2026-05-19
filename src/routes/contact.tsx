@@ -84,11 +84,11 @@ function ContactPage() {
           ) : (
             <>
               <div className="grid gap-6 sm:grid-cols-2">
-                <Field label="First name" name="firstName" />
-                <Field label="Last name" name="lastName" />
+                <Field label="First name" name="firstName" placeholder="First name" />
+                <Field label="Last name" name="lastName" placeholder="Last name" />
               </div>
-              <Field label="Email" name="email" type="email" />
-              <Field label="Subject" name="subject" />
+              <Field label="Email" name="email" type="email" placeholder="you@example.com" />
+              <Field label="Subject" name="subject" placeholder="Custom sofa enquiry" />
               <div>
                 <label className="text-xs uppercase tracking-widest text-muted-foreground">
                   Message
@@ -96,7 +96,8 @@ function ContactPage() {
                 <textarea
                   required
                   rows={6}
-                  className="mt-2 w-full border-b border-border bg-transparent py-3 text-base outline-none transition-colors focus:border-primary"
+                  className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors placeholder:text-muted-foreground/55 focus:border-primary focus:ring-2 focus:ring-primary/15"
+                  placeholder="Tell us what you are looking for..."
                 />
               </div>
               <button
@@ -113,7 +114,17 @@ function ContactPage() {
   );
 }
 
-function Field({ label, name, type = "text" }: { label: string; name: string; type?: string }) {
+function Field({
+  label,
+  name,
+  type = "text",
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+}) {
   return (
     <div>
       <label htmlFor={name} className="text-xs uppercase tracking-widest text-muted-foreground">
@@ -124,7 +135,8 @@ function Field({ label, name, type = "text" }: { label: string; name: string; ty
         name={name}
         type={type}
         required
-        className="mt-2 w-full border-b border-border bg-transparent py-3 text-base outline-none transition-colors focus:border-primary"
+        placeholder={placeholder}
+        className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors placeholder:text-muted-foreground/55 focus:border-primary focus:ring-2 focus:ring-primary/15"
       />
     </div>
   );
