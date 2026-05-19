@@ -1,37 +1,53 @@
-import { createFileRoute, Outlet, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { LayoutDashboard, ShoppingBag, Home, LogOut } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Home, LogOut, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
-  beforeLoad: async ({ location }) => {
-    const { data } = await supabase.auth.getSession();
-
-    if (!data.session) {
-      throw redirect({
-        to: "/admin-login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
   component: AdminLayout,
 });
 
 function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("Admin");
+  const [checkingSession, setCheckingSession] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user?.email) setEmail(data.user.email);
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        navigate({
+          to: "/admin-login",
+          search: {
+            redirect: location.href,
+          },
+          replace: true,
+        });
+        return;
+      }
+
+      if (data.session.user.email) {
+        setEmail(data.session.user.email);
+      }
+
+      setCheckingSession(false);
     });
-  }, []);
+  }, [location.href, navigate]);
 
   async function handleLogout() {
     await supabase.auth.signOut();
     navigate({ to: "/admin-login" });
+  }
+
+  if (checkingSession) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex items-center gap-3 text-primary">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span className="text-sm font-medium">Checking admin access...</span>
+        </div>
+      </main>
+    );
   }
 
   return (

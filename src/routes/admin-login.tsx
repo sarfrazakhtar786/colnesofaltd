@@ -1,5 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -13,13 +13,6 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/admin-login")({
   validateSearch: searchSchema,
-  beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
-
-    if (data.session) {
-      throw redirect({ to: "/admin" });
-    }
-  },
   component: AdminLogin,
 });
 
@@ -29,6 +22,14 @@ function AdminLogin() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        window.location.replace(redirect || "/admin");
+      }
+    });
+  }, [redirect]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -46,7 +47,7 @@ function AdminLogin() {
       return;
     }
 
-    window.location.href = redirect || "/admin";
+    window.location.assign(redirect || "/admin");
   }
 
   return (
