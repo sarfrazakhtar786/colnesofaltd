@@ -59,12 +59,12 @@ function QuotePage() {
           }}
         >
           <div className="grid gap-6 sm:grid-cols-2">
-            <Field label="First name" name="firstName" required />
-            <Field label="Last name" name="lastName" required />
+            <Field label="First name" name="firstName" placeholder="First name" required />
+            <Field label="Last name" name="lastName" placeholder="Last name" required />
           </div>
           <div className="grid gap-6 sm:grid-cols-2">
-            <Field label="Email" name="email" type="email" required />
-            <Field label="Phone" name="phone" type="tel" />
+            <Field label="Email" name="email" type="email" placeholder="you@example.com" required />
+            <Field label="Phone" name="phone" type="tel" placeholder="07417 556531" />
           </div>
 
           <div>
@@ -74,7 +74,7 @@ function QuotePage() {
             <select
               name="model"
               defaultValue={preset?.slug ?? ""}
-              className="mt-2 w-full border-b border-border bg-transparent py-3 text-base outline-none transition-colors focus:border-primary"
+              className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/15"
             >
               <option value="">No preference / I&apos;m not sure yet</option>
               {sofas.map((s) => (
@@ -107,13 +107,13 @@ function QuotePage() {
               rows={6}
               required
               defaultValue={preset ? `I'm interested in the ${preset.name} (${preset.size}). ` : ""}
-              className="mt-2 w-full border-b border-border bg-transparent py-3 text-base outline-none transition-colors focus:border-primary"
+              className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors placeholder:text-muted-foreground/55 focus:border-primary focus:ring-2 focus:ring-primary/15"
               placeholder="Tell us about the room, your timeline, and anything specific you have in mind."
             />
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2">
-            <Field label="Delivery city" name="city" />
+            <Field label="Delivery city" name="city" placeholder="e.g. Manchester" />
             <Field label="Desired timeline" name="timeline" placeholder="e.g. before December" />
           </div>
 
@@ -159,7 +159,7 @@ function Field({
         type={type}
         required={required}
         placeholder={placeholder}
-        className="mt-2 w-full border-b border-border bg-transparent py-3 text-base outline-none transition-colors focus:border-primary placeholder:text-muted-foreground/50"
+        className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors placeholder:text-muted-foreground/55 focus:border-primary focus:ring-2 focus:ring-primary/15"
       />
     </div>
   );
