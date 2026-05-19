@@ -1,9 +1,9 @@
-import { createFileRoute, Outlet, Link, redirect } from '@tanstack/react-router'
-import { LayoutDashboard, ShoppingBag, Home, Settings, LogOut } from 'lucide-react'
+import { createFileRoute, Outlet, Link, redirect } from "@tanstack/react-router";
+import { LayoutDashboard, ShoppingBag, Home, Settings, LogOut } from "lucide-react";
 
-export const Route = createFileRoute('/admin')({
+export const Route = createFileRoute("/admin")({
   component: AdminLayout,
-})
+});
 
 function AdminLayout() {
   return (
@@ -19,7 +19,7 @@ function AdminLayout() {
           <Link
             to="/admin"
             className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: 'bg-muted font-medium text-primary' }}
+            activeProps={{ className: "bg-muted font-medium text-primary" }}
           >
             <LayoutDashboard className="h-4 w-4" />
             Dashboard
@@ -27,7 +27,7 @@ function AdminLayout() {
           <Link
             to="/admin/products"
             className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: 'bg-muted font-medium text-primary' }}
+            activeProps={{ className: "bg-muted font-medium text-primary" }}
           >
             <ShoppingBag className="h-4 w-4" />
             Products
@@ -35,7 +35,7 @@ function AdminLayout() {
           <Link
             to="/admin/content"
             className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: 'bg-muted font-medium text-primary' }}
+            activeProps={{ className: "bg-muted font-medium text-primary" }}
           >
             <Home className="h-4 w-4" />
             Page Content
@@ -62,5 +62,5 @@ function AdminLayout() {
         </div>
       </main>
     </div>
-  )
+  );
 }

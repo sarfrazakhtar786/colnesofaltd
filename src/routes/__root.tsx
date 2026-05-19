@@ -32,15 +32,35 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Colne Sofa LTD — Hand-crafted Sofas, Made to Order" },
-      { name: "description", content: "A UK Based atelier of bespoke sofas. Discover the collection or request a custom quote." },
+      {
+        name: "description",
+        content:
+          "A UK Based atelier of bespoke sofas. Discover the collection or request a custom quote.",
+      },
       { name: "author", content: "Colne Sofa LTD" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Colne Sofa LTD — Hand-crafted Sofas, Made to Order" },
       { name: "twitter:title", content: "Colne Sofa LTD — Hand-crafted Sofas, Made to Order" },
-      { property: "og:description", content: "A UK Based atelier of bespoke sofas. Discover the collection or request a custom quote." },
-      { name: "twitter:description", content: "A UK Based atelier of bespoke sofas. Discover the collection or request a custom quote." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/da31351f-79d7-406a-a000-ea61d20a2360/id-preview-f778d8eb--0776b38f-66d7-46e2-9dbe-8c18146f4046.lovable.app-1777404692590.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/da31351f-79d7-406a-a000-ea61d20a2360/id-preview-f778d8eb--0776b38f-66d7-46e2-9dbe-8c18146f4046.lovable.app-1777404692590.png" },
+      {
+        property: "og:description",
+        content:
+          "A UK Based atelier of bespoke sofas. Discover the collection or request a custom quote.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "A UK Based atelier of bespoke sofas. Discover the collection or request a custom quote.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/da31351f-79d7-406a-a000-ea61d20a2360/id-preview-f778d8eb--0776b38f-66d7-46e2-9dbe-8c18146f4046.lovable.app-1777404692590.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/da31351f-79d7-406a-a000-ea61d20a2360/id-preview-f778d8eb--0776b38f-66d7-46e2-9dbe-8c18146f4046.lovable.app-1777404692590.png",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],

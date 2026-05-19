@@ -10,15 +10,33 @@ export function SiteFooter() {
             <span className="font-display text-2xl italic text-primary">Sofa LTD</span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            Hand-crafted sofas made to order in our atelier. Sustainable materials, lifetime frames, and a quiet sense of luxury.
+            Hand-crafted sofas made to order in our atelier. Sustainable materials, lifetime frames,
+            and a quiet sense of luxury.
           </p>
         </div>
         <div>
           <p className="eyebrow">Explore</p>
           <ul className="mt-4 space-y-2 text-sm">
-            <li><Link to="/collection" className="hover:text-primary">Collection</Link></li>
-            <li><Link to="/about" className="hover:text-primary">About Us</Link></li>            <li><Link to="/quote" className="hover:text-primary">Custom Order</Link></li>
-            <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
+            <li>
+              <Link to="/collection" className="hover:text-primary">
+                Collection
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-primary">
+                About Us
+              </Link>
+            </li>{" "}
+            <li>
+              <Link to="/quote" className="hover:text-primary">
+                Custom Order
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-primary">
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

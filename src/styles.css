@@ -1,10 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap");
+
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap');
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -33,16 +33,16 @@
   --color-clay: var(--clay);
   --color-cream: var(--cream);
   --color-ink: var(--ink);
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.25rem;
 
   /* Warm editorial palette */
-  --background: oklch(0.972 0.012 85);          /* warm cream */
-  --foreground: oklch(0.235 0.025 60);          /* deep ink brown */
+  --background: oklch(0.972 0.012 85); /* warm cream */
+  --foreground: oklch(0.235 0.025 60); /* deep ink brown */
   --cream: oklch(0.97 0.014 80);
   --ink: oklch(0.18 0.02 60);
 
@@ -51,17 +51,17 @@
   --popover: oklch(0.985 0.008 85);
   --popover-foreground: oklch(0.235 0.025 60);
 
-  --primary: oklch(0.45 0.105 45);              /* terracotta clay */
+  --primary: oklch(0.45 0.105 45); /* terracotta clay */
   --primary-foreground: oklch(0.97 0.014 80);
   --clay: oklch(0.55 0.135 40);
 
-  --secondary: oklch(0.92 0.022 75);            /* warm sand */
+  --secondary: oklch(0.92 0.022 75); /* warm sand */
   --secondary-foreground: oklch(0.235 0.025 60);
 
   --muted: oklch(0.93 0.018 78);
   --muted-foreground: oklch(0.45 0.02 60);
 
-  --accent: oklch(0.88 0.04 70);                /* camel */
+  --accent: oklch(0.88 0.04 70); /* camel */
   --accent-foreground: oklch(0.235 0.025 60);
 
   --destructive: oklch(0.55 0.2 27);
@@ -83,12 +83,18 @@
     font-feature-settings: "ss01", "ss02";
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4, h5 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: -0.02em;
   }
-  .font-display { font-family: var(--font-display); }
+  .font-display {
+    font-family: var(--font-display);
+  }
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 0.7rem;
@@ -100,6 +106,10 @@
 }
 
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  .text-pretty { text-wrap: pretty; }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
 }

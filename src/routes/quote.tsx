@@ -12,7 +12,11 @@ export const Route = createFileRoute("/quote")({
   head: () => ({
     meta: [
       { title: "Request a Custom Quote — Colne Sofa LTD" },
-      { name: "description", content: "Tell us about your project and we'll prepare a custom sofa quote within two business days." },
+      {
+        name: "description",
+        content:
+          "Tell us about your project and we'll prepare a custom sofa quote within two business days.",
+      },
       { property: "og:title", content: "Request a Custom Quote — Colne Sofa LTD" },
       { property: "og:description", content: "Bespoke sofas, made to your dimensions and fabric." },
     ],
@@ -29,24 +33,30 @@ function QuotePage() {
     <section className="mx-auto max-w-5xl px-6 py-24 lg:px-10">
       <p className="eyebrow">Custom Order</p>
       <h1 className="mt-5 text-balance font-display text-5xl leading-[1.05] sm:text-6xl">
-        Request a quote.<br />
+        Request a quote.
+        <br />
         <span className="italic text-primary">We&apos;ll reply within 48 hours.</span>
       </h1>
       <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-foreground/75">
-        Tell us about the sofa, the room, the fabric you have in mind. The more details, the more accurate our quote and sketch.
+        Tell us about the sofa, the room, the fabric you have in mind. The more details, the more
+        accurate our quote and sketch.
       </p>
 
       {sent ? (
         <div className="mt-16 rounded-sm border border-primary/30 bg-primary/5 p-12 text-center">
           <h2 className="font-display text-4xl">Request received.</h2>
           <p className="mt-4 text-foreground/75">
-            One of our designers will contact you within two business days with a quote and an initial sketch.
+            One of our designers will contact you within two business days with a quote and an
+            initial sketch.
           </p>
         </div>
       ) : (
         <form
           className="mt-16 grid gap-8"
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSent(true);
+          }}
         >
           <div className="grid gap-6 sm:grid-cols-2">
             <Field label="First name" name="firstName" required />
@@ -58,7 +68,9 @@ function QuotePage() {
           </div>
 
           <div>
-            <label className="text-xs uppercase tracking-widest text-muted-foreground">Sofa model</label>
+            <label className="text-xs uppercase tracking-widest text-muted-foreground">
+              Sofa model
+            </label>
             <select
               name="model"
               defaultValue={preset?.slug ?? ""}
@@ -74,12 +86,22 @@ function QuotePage() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2">
-            <Field label="Preferred fabric or leather" name="fabric" placeholder="e.g. cognac leather, sage linen" />
-            <Field label="Approximate dimensions" name="dimensions" placeholder="e.g. 240 × 95 cm" />
+            <Field
+              label="Preferred fabric or leather"
+              name="fabric"
+              placeholder="e.g. cognac leather, sage linen"
+            />
+            <Field
+              label="Approximate dimensions"
+              name="dimensions"
+              placeholder="e.g. 240 × 95 cm"
+            />
           </div>
 
           <div>
-            <label className="text-xs uppercase tracking-widest text-muted-foreground">Project details</label>
+            <label className="text-xs uppercase tracking-widest text-muted-foreground">
+              Project details
+            </label>
             <textarea
               name="details"
               rows={6}
@@ -128,7 +150,8 @@ function Field({
   return (
     <div>
       <label htmlFor={name} className="text-xs uppercase tracking-widest text-muted-foreground">
-        {label}{required && " *"}
+        {label}
+        {required && " *"}
       </label>
       <input
         id={name}

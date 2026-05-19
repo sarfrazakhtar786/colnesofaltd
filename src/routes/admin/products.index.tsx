@@ -1,40 +1,40 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
-import { Plus, Edit, Trash2, Loader2 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { Plus, Edit, Trash2, Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export const Route = createFileRoute('/admin/products/')({
+export const Route = createFileRoute("/admin/products/")({
   component: AdminProducts,
-})
+});
 
 function AdminProducts() {
-  const [products, setProducts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   async function fetchProducts() {
-    setLoading(true)
+    setLoading(true);
     const { data, error } = await supabase
-      .from('sofas')
-      .select('*')
-      .order('created_at', { ascending: false })
-    
-    if (data) setProducts(data)
-    setLoading(false)
+      .from("sofas")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (data) setProducts(data);
+    setLoading(false);
   }
 
   async function deleteProduct(id: string) {
-    if (!confirm('Are you sure you want to delete this product?')) return
-    
-    const { error } = await supabase.from('sofas').delete().eq('id', id)
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    const { error } = await supabase.from("sofas").delete().eq("id", id);
     if (error) {
-      alert('Error deleting product')
+      alert("Error deleting product");
     } else {
-      fetchProducts()
+      fetchProducts();
     }
   }
 
@@ -42,7 +42,7 @@ function AdminProducts() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-display">Manage Products</h1>
-        <Link 
+        <Link
           to="/admin/products/new"
           className="bg-primary text-primary-foreground px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium"
         >
@@ -76,9 +76,9 @@ function AdminProducts() {
                 {products.map((product) => (
                   <tr key={product.id}>
                     <td className="px-4 py-3">
-                      <img 
-                        src={product.image_url} 
-                        alt={product.name} 
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
                         className="h-12 w-12 object-cover rounded border"
                       />
                     </td>
@@ -86,14 +86,14 @@ function AdminProducts() {
                     <td className="px-4 py-3 text-muted-foreground">{product.price}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-2">
-                        <Link 
-                          to="/admin/products/$id" 
+                        <Link
+                          to="/admin/products/$id"
                           params={{ id: product.id }}
                           className="p-2 hover:bg-muted rounded-md transition-colors"
                         >
                           <Edit className="h-4 w-4 text-muted-foreground" />
                         </Link>
-                        <button 
+                        <button
                           onClick={() => deleteProduct(product.id)}
                           className="p-2 hover:bg-muted rounded-md transition-colors text-destructive"
                         >
@@ -109,5 +109,5 @@ function AdminProducts() {
         )}
       </div>
     </div>
-  )
+  );
 }

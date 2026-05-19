@@ -8,7 +8,10 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About Us — Colne Sofa LTD" },
-      { name: "description", content: "Inside the Parisian atelier where every Colne Sofa LTD sofa is made by hand." },
+      {
+        name: "description",
+        content: "Inside the Parisian atelier where every Colne Sofa LTD sofa is made by hand.",
+      },
     ],
   }),
   component: AboutPage,
@@ -21,26 +24,42 @@ function AboutPage() {
   useEffect(() => {
     async function fetchContent() {
       const { data } = await supabase
-        .from('site_settings')
-        .select('*')
-        .eq('key', 'site_content')
+        .from("site_settings")
+        .select("*")
+        .eq("key", "site_content")
         .single();
-      
+
       if (data) setContent(data.value);
       setLoading(false);
     }
     fetchContent();
   }, []);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><Loader2 className="animate-spin text-primary" /></div>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="animate-spin text-primary" />
+      </div>
+    );
 
   const aboutHeroTitle = content?.about_hero_title || "A small atelier on Rue de l'Artisan.";
-  const aboutHeroSubtitle = content?.about_hero_subtitle || "Colne Sofa LTD was founded by Élise Marchand in a single workshop in the 11th arrondissement of Paris. Today, fourteen artisans still make every sofa by hand, in the same room where it all started.";
+  const aboutHeroSubtitle =
+    content?.about_hero_subtitle ||
+    "Colne Sofa LTD was founded by Élise Marchand in a single workshop in the 11th arrondissement of Paris. Today, fourteen artisans still make every sofa by hand, in the same room where it all started.";
   const aboutImage = content?.about_image || craftsmanDefault;
   const values = content?.values || [
-    { t: "Materials before margins", d: "We source full-grain leathers from a tannery in Tuscany and weave our bouclé in a small mill outside Florence. Cheaper alternatives exist; we don't use them." },
-    { t: "Hands before machines", d: "Every spring is hand-tied with hemp twine. Every cushion is filled by hand. A machine could do it in minutes — a craftsman does it for life." },
-    { t: "Time before haste", d: "An average sofa takes 84 hours of work and twelve weeks of patience. We won't ship anything before it's right." },
+    {
+      t: "Materials before margins",
+      d: "We source full-grain leathers from a tannery in Tuscany and weave our bouclé in a small mill outside Florence. Cheaper alternatives exist; we don't use them.",
+    },
+    {
+      t: "Hands before machines",
+      d: "Every spring is hand-tied with hemp twine. Every cushion is filled by hand. A machine could do it in minutes — a craftsman does it for life.",
+    },
+    {
+      t: "Time before haste",
+      d: "An average sofa takes 84 hours of work and twelve weeks of patience. We won't ship anything before it's right.",
+    },
   ];
 
   return (

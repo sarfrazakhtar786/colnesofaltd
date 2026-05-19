@@ -1,16 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ShoppingBag, FileText, Settings, Users } from 'lucide-react'
+import { createFileRoute } from "@tanstack/react-router";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ShoppingBag, FileText, Settings, Users } from "lucide-react";
 
-export const Route = createFileRoute('/admin/')({
+export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
-})
+});
 
 function AdminDashboard() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-display">Dashboard Overview</h1>
-      
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -40,11 +40,15 @@ function AdminDashboard() {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">Add New Product</button>
-            <button className="px-4 py-2 border rounded-md text-sm font-medium">Edit Home Page Content</button>
+            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">
+              Add New Product
+            </button>
+            <button className="px-4 py-2 border rounded-md text-sm font-medium">
+              Edit Home Page Content
+            </button>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }

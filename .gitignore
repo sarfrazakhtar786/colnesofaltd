@@ -38,3 +38,6 @@ dist-ssr
 
 # tanstack
 .tanstack
+
+# cloudflare/wrangler local state
+.wrangler

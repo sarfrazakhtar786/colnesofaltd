@@ -1,71 +1,107 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/products/new")({
-  component: AddProduct,
+const emptyProduct = {
+  name: "",
+  slug: "",
+  price: "",
+  description: "",
+  image_url: "",
+  category: "Sofa",
+  width: "",
+  depth: "",
+  height: "",
+  materials: "",
+};
+
+export const Route = createFileRoute("/admin/products/$id")({
+  component: EditProduct,
 });
 
-function AddProduct() {
+function EditProduct() {
+  const { id } = Route.useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    slug: "",
-    price: "",
-    description: "",
-    image_url: "",
-    category: "Sofa",
-    width: "",
-    depth: "",
-    height: "",
-    materials: "",
-  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState(emptyProduct);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
+
+  async function fetchProduct() {
+    setLoading(true);
+    const { data, error } = await supabase.from("sofas").select("*").eq("id", id).single();
+
+    if (error) {
+      alert("Error loading product: " + error.message);
+      navigate({ to: "/admin/products" });
+      return;
+    }
+
+    setFormData({
+      ...emptyProduct,
+      ...data,
+      materials: Array.isArray(data.materials) ? data.materials.join(", ") : data.materials || "",
+    });
+    setLoading(false);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Auto-generate slug from name
-    if (name === "name") {
-      setFormData((prev) => ({
-        ...prev,
-        slug: value
+    setFormData((prev) => {
+      const next = { ...prev, [name]: value };
+
+      if (name === "name") {
+        next.slug = value
           .toLowerCase()
           .replace(/\s+/g, "-")
-          .replace(/[^\w-]/g, ""),
-      }));
-    }
+          .replace(/[^\w-]/g, "");
+      }
+
+      return next;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
-    const { error } = await supabase.from("sofas").insert([formData]);
+    const { error } = await supabase.from("sofas").update(formData).eq("id", id);
 
     if (error) {
-      alert("Error adding product: " + error.message);
+      alert("Error updating product: " + error.message);
     } else {
-      alert("Product added successfully!");
+      alert("Product updated successfully!");
       navigate({ to: "/admin/products" });
     }
-    setLoading(false);
+
+    setSaving(false);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center p-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 max-w-2xl pb-20">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => window.history.back()}>
+        <Button variant="ghost" size="icon" onClick={() => navigate({ to: "/admin/products" })}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h1 className="text-3xl font-display">Add New Product</h1>
+        <h1 className="text-3xl font-display">Edit Product</h1>
       </div>
 
       <Card>
@@ -171,9 +207,9 @@ function AddProduct() {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              Save Product
+            <Button type="submit" className="w-full" disabled={saving}>
+              {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              Save Changes
             </Button>
           </form>
         </CardContent>

@@ -31,7 +31,12 @@ export const sofas: Sofa[] = [
     description:
       "A modern interpretation of the British icon. Each diamond is hand-tufted by a single craftsman, and the full-grain Italian leather develops a richer patina with every passing year.",
     dimensions: { width: "220 cm", depth: "95 cm", height: "78 cm" },
-    materials: ["Full-grain Italian leather", "Solid beech frame", "Hand-tied springs", "Brass studs"],
+    materials: [
+      "Full-grain Italian leather",
+      "Solid beech frame",
+      "Hand-tied springs",
+      "Brass studs",
+    ],
     leadTime: "10–12 weeks",
   },
   {
@@ -45,7 +50,12 @@ export const sofas: Sofa[] = [
     description:
       "Inspired by 1970s Italian salons, the Luna Curve is built in three modules so it can adapt to any architecture. Wrapped in a dense ivory bouclé woven in Tuscany.",
     dimensions: { width: "320 cm", depth: "110 cm", height: "75 cm" },
-    materials: ["Tuscan bouclé", "Kiln-dried hardwood", "High-resilience foam", "Down-wrapped cushions"],
+    materials: [
+      "Tuscan bouclé",
+      "Kiln-dried hardwood",
+      "High-resilience foam",
+      "Down-wrapped cushions",
+    ],
     leadTime: "12–14 weeks",
   },
   {
