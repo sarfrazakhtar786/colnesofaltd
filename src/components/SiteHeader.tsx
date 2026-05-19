@@ -13,10 +13,13 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-primary/30 bg-secondary text-secondary-foreground shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-        <Link to="/" className="flex items-baseline gap-1.5">
-          <span className="font-display text-2xl tracking-tight text-primary">Colne</span>
-          <span className="font-display text-2xl italic text-primary">Sofa LTD</span>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 lg:px-10">
+        <Link to="/" className="flex h-16 items-center">
+          <img
+            src="/colne-sofa-logo-navbar-light.png"
+            alt="Colne Sofa LTD"
+            className="h-full w-auto max-w-[250px] object-contain md:max-w-[330px]"
+          />
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">
