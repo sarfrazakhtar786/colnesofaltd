@@ -1,7 +1,9 @@
 import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { LayoutDashboard, ShoppingBag, Home, Inbox, LogOut, Loader2 } from "lucide-react";
+import { Home, Inbox, LayoutDashboard, Loader2, LogOut, ShieldAlert, ShoppingBag } from "lucide-react";
+import { isCurrentUserAdmin } from "@/lib/admin-auth";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
@@ -12,9 +14,10 @@ function AdminLayout() {
   const location = useLocation();
   const [email, setEmail] = useState("Admin");
   const [checkingSession, setCheckingSession] = useState(true);
+  const [hasAdminAccess, setHasAdminAccess] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (!data.session) {
         navigate({
           to: "/admin-login",
@@ -26,10 +29,14 @@ function AdminLayout() {
         return;
       }
 
-      if (data.session.user.email) {
-        setEmail(data.session.user.email);
+      const user = data.session.user;
+      const adminAccess = await isCurrentUserAdmin(user.id, user.email);
+
+      if (user.email) {
+        setEmail(user.email);
       }
 
+      setHasAdminAccess(adminAccess);
       setCheckingSession(false);
     });
   }, [location.href, navigate]);
@@ -45,6 +52,25 @@ function AdminLayout() {
         <div className="flex items-center gap-3 text-primary">
           <Loader2 className="h-5 w-5 animate-spin" />
           <span className="text-sm font-medium">Checking admin access...</span>
+        </div>
+      </main>
+    );
+  }
+
+  if (!hasAdminAccess) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-background px-6">
+        <div className="max-w-md rounded-sm border bg-card p-8 text-center shadow-sm">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+            <ShieldAlert className="h-6 w-6" />
+          </div>
+          <h1 className="mt-5 font-display text-3xl">Admin access required</h1>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            You are signed in as {email}, but this account is not listed in `admin_users`.
+          </p>
+          <Button onClick={handleLogout} className="mt-6">
+            Sign out
+          </Button>
         </div>
       </main>
     );

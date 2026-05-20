@@ -124,6 +124,14 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added a mobile sticky quote CTA on product detail pages.
 - Product detail quote buttons now preselect the current product on `/quote`.
 
+### Admin security
+
+- Added an `admin_users` authorization check to the admin layout.
+- Logged-in users must now be listed in `admin_users` to access admin pages.
+- Added an access denied screen for authenticated non-admin users.
+- Added SQL setup file for creating `admin_users` and tightening RLS policies:
+  - `docs/supabase-admin-security.sql`
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset
