@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, Save } from "lucide-react";
-import { ImageUrlPreview } from "@/components/admin/ImageUrlPreview";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 const defaultContent = {
   hero_title: "Sofas built the slow way, to be lived in for decades.",
@@ -127,23 +127,15 @@ function AdminContent() {
                 rows={3}
               />
             </div>
-            <div className="grid gap-2">
-              <Label>Hero Background Image URL</Label>
-              <p className="text-xs text-muted-foreground">
-                Recommended hero image resolution: 2400 x 1350 px or larger, landscape 16:9.
-              </p>
-              <Input
-                value={content.hero_image}
-                onChange={(e) => setContent({ ...content, hero_image: e.target.value })}
-                placeholder="https://..."
-              />
-              <ImageUrlPreview
-                url={content.hero_image}
-                label="Hero image preview"
-                hint="Best: 2400 x 1350 px"
-                aspect="hero"
-              />
-            </div>
+            <ImageUploadField
+              id="hero_image"
+              label="Hero Background Image URL"
+              value={content.hero_image}
+              onChange={(hero_image) => setContent({ ...content, hero_image })}
+              folder="hero"
+              hint="Recommended: 2400 x 1350 px or larger, landscape 16:9."
+              aspect="hero"
+            />
           </CardContent>
         </Card>
 
@@ -194,19 +186,14 @@ function AdminContent() {
                 rows={4}
               />
             </div>
-            <div className="grid gap-2">
-              <Label>Main Image URL</Label>
-              <Input
-                value={content.about_image}
-                onChange={(e) => setContent({ ...content, about_image: e.target.value })}
-                placeholder="https://..."
-              />
-              <ImageUrlPreview
-                url={content.about_image}
-                label="About page image preview"
-                hint="Best: 1600 x 1200 px"
-              />
-            </div>
+            <ImageUploadField
+              id="about_image"
+              label="Main Image URL"
+              value={content.about_image}
+              onChange={(about_image) => setContent({ ...content, about_image })}
+              folder="about"
+              hint="Recommended: 1600 x 1200 px or larger."
+            />
 
             <div className="pt-4 border-t space-y-4">
               <h3 className="font-medium">Company Values</h3>

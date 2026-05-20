@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, ArrowLeft } from "lucide-react";
-import { ImageUrlPreview } from "@/components/admin/ImageUrlPreview";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 export const Route = createFileRoute("/admin/products/new")({
   component: AddProduct,
@@ -102,22 +102,16 @@ function AddProduct() {
               <Input id="slug" name="slug" required value={formData.slug} onChange={handleChange} />
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="image_url">Image URL</Label>
-              <Input
-                id="image_url"
-                name="image_url"
-                required
-                value={formData.image_url}
-                onChange={handleChange}
-                placeholder="e.g. /sofa-chesterfield-7mql-6zd.png or https://..."
-              />
-              <ImageUrlPreview
-                url={formData.image_url}
-                label="Product image preview"
-                hint="Best: 1600 x 1200 px"
-              />
-            </div>
+            <ImageUploadField
+              id="image_url"
+              label="Image URL"
+              required
+              value={formData.image_url}
+              onChange={(image_url) => setFormData((prev) => ({ ...prev, image_url }))}
+              folder="products"
+              placeholder="e.g. /sofa-chesterfield-7mql-6zd.png or https://..."
+              hint="Recommended: 1600 x 1200 px or larger."
+            />
 
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
