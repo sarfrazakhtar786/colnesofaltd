@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { productCollections } from "@/lib/collections";
 
 export const Route = createFileRoute("/admin/products/new")({
   component: AddProduct,
@@ -22,14 +23,16 @@ function AddProduct() {
     price: "",
     description: "",
     image_url: "",
-    category: "Sofa",
+    category: "Sofa Collection",
     width: "",
     depth: "",
     height: "",
     materials: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -100,6 +103,26 @@ function AddProduct() {
             <div className="grid gap-2">
               <Label htmlFor="slug">Slug (URL identifier)</Label>
               <Input id="slug" name="slug" required value={formData.slug} onChange={handleChange} />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="category">Collection</Label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="h-10 rounded-md border border-input bg-white px-3 text-sm shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+              >
+                {productCollections.map((collection) => (
+                  <option key={collection.value} value={collection.value}>
+                    {collection.label}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">
+                This decides whether the product appears under Sofa Collection or Bed Collection.
+              </p>
             </div>
 
             <ImageUploadField

@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { getPublicImageUrl } from "@/lib/images";
 import { Plus, Edit, Trash2, Loader2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { getCollectionLabel } from "@/lib/collections";
 
 export const Route = createFileRoute("/admin/products/")({
   component: AdminProducts,
@@ -69,6 +70,7 @@ function AdminProducts() {
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Image</th>
                   <th className="px-4 py-3 text-left font-medium">Name</th>
+                  <th className="px-4 py-3 text-left font-medium">Collection</th>
                   <th className="px-4 py-3 text-left font-medium">Price</th>
                   <th className="px-4 py-3 text-right font-medium">Actions</th>
                 </tr>
@@ -84,6 +86,11 @@ function AdminProducts() {
                       />
                     </td>
                     <td className="px-4 py-3 font-medium">{product.name}</td>
+                    <td className="px-4 py-3">
+                      <span className="rounded-sm border border-primary/25 bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                        {getCollectionLabel(product.category)}
+                      </span>
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground">{product.price}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-2">

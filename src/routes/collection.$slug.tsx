@@ -1,8 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { getPublicImageUrl } from "@/lib/images";
-import { ArrowLeft, ArrowUpRight, Loader2, Check } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Loader2 } from "lucide-react";
+import { getCollectionLabel } from "@/lib/collections";
 
 export const Route = createFileRoute("/collection/$slug")({
   component: SofaDetailPage,
@@ -56,7 +57,7 @@ function SofaDetailPage() {
 
           {/* Details */}
           <div className="flex flex-col">
-            <p className="eyebrow">{sofa.category || "Atelier Collection"}</p>
+            <p className="eyebrow">{getCollectionLabel(sofa.category)}</p>
             <h1 className="mt-4 font-display text-5xl italic sm:text-6xl">{sofa.name}</h1>
             <p className="mt-6 text-2xl font-semibold text-primary">{sofa.price}</p>
 

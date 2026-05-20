@@ -73,6 +73,17 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
   - `src/routes/admin/products.new.tsx`
   - `src/routes/admin/products.$id.tsx`
 
+### Collections
+
+- Added two product collections using the existing `sofas.category` field:
+  - `Sofa Collection`
+  - `Bed Collection`
+- Existing products with older category values like `Sofa` are displayed as `Sofa Collection`.
+- Added a Collection dropdown to admin add/edit product forms.
+- Updated the admin products table to show each product's collection.
+- Updated the public `/collection` page to group products under Sofa Collection and Bed Collection.
+- Updated product detail pages to show normalized collection names.
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset
