@@ -34,6 +34,7 @@ function ContactPage() {
       "",
       `Name: ${form.get("firstName") || ""} ${form.get("lastName") || ""}`.trim(),
       `Email: ${form.get("email") || ""}`,
+      `Phone: ${form.get("phone") || ""}`,
       `Subject: ${form.get("subject") || ""}`,
       "",
       "Message:",
@@ -109,7 +110,10 @@ function ContactPage() {
                 <Field label="First name" name="firstName" placeholder="First name" />
                 <Field label="Last name" name="lastName" placeholder="Last name" />
               </div>
-              <Field label="Email" name="email" type="email" placeholder="you@example.com" />
+              <div className="grid gap-6 sm:grid-cols-2">
+                <Field label="Email" name="email" type="email" placeholder="you@example.com" />
+                <Field label="Phone" name="phone" type="tel" placeholder="07417 556531" />
+              </div>
               <Field label="Subject" name="subject" placeholder="Custom sofa enquiry" />
               <div>
                 <label className="text-xs uppercase tracking-widest text-muted-foreground">

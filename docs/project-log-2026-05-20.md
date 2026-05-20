@@ -84,6 +84,7 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Updated the public `/collection` page to group products under Sofa Collection and Bed Collection.
 - Updated product detail pages to show normalized collection names.
 - Updated the `/quote` page product dropdown to load live products from Supabase instead of the old static sofa data file.
+- Added a phone number field to the `/contact` form and included it in the WhatsApp message.
 
 ## Commits Pushed Today
 
