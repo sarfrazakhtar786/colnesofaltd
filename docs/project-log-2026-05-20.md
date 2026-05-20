@@ -131,6 +131,8 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added an access denied screen for authenticated non-admin users.
 - Added SQL setup file for creating `admin_users` and tightening RLS policies:
   - `docs/supabase-admin-security.sql`
+- Smoothed the admin login redirect by replacing full browser reloads with app navigation.
+- Prevented repeated admin session checks while moving between admin pages.
 
 ## Commits Pushed Today
 

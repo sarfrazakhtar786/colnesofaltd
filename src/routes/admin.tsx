@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Home, Inbox, LayoutDashboard, Loader2, LogOut, ShieldAlert, ShoppingBag } from "lucide-react";
 import { isCurrentUserAdmin } from "@/lib/admin-auth";
@@ -12,17 +12,24 @@ export const Route = createFileRoute("/admin")({
 function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const initialAdminPath = useRef(location.href);
   const [email, setEmail] = useState("Admin");
   const [checkingSession, setCheckingSession] = useState(true);
   const [hasAdminAccess, setHasAdminAccess] = useState(false);
 
   useEffect(() => {
+    let isActive = true;
+
     supabase.auth.getSession().then(async ({ data }) => {
+      if (!isActive) {
+        return;
+      }
+
       if (!data.session) {
         navigate({
           to: "/admin-login",
           search: {
-            redirect: location.href,
+            redirect: initialAdminPath.current,
           },
           replace: true,
         });
@@ -32,6 +39,10 @@ function AdminLayout() {
       const user = data.session.user;
       const adminAccess = await isCurrentUserAdmin(user.id, user.email);
 
+      if (!isActive) {
+        return;
+      }
+
       if (user.email) {
         setEmail(user.email);
       }
@@ -39,7 +50,11 @@ function AdminLayout() {
       setHasAdminAccess(adminAccess);
       setCheckingSession(false);
     });
-  }, [location.href, navigate]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [navigate]);
 
   async function handleLogout() {
     await supabase.auth.signOut();

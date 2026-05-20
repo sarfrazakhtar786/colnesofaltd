@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/lib/supabase";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/admin-login")({
 
 function AdminLogin() {
   const { redirect } = Route.useSearch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,10 +28,10 @@ function AdminLogin() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
-        window.location.replace(redirect || "/admin");
+        navigate({ to: redirect || "/admin", replace: true });
       }
     });
-  }, [redirect]);
+  }, [navigate, redirect]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -48,7 +49,7 @@ function AdminLogin() {
       return;
     }
 
-    window.location.assign(redirect || "/admin");
+    navigate({ to: redirect || "/admin", replace: true });
   }
 
   return (
