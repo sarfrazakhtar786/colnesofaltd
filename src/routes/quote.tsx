@@ -1,8 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { z } from "zod";
-import { sofas, getSofa } from "@/data/sofas";
-import { useState } from "react";
 import { contactDetails } from "@/lib/contact";
+import { normalizeCollection } from "@/lib/collections";
+import { supabase } from "@/lib/supabase";
+
+type QuoteProduct = {
+  slug: string;
+  name: string;
+  category: string | null;
+};
 
 const searchSchema = z.object({
   sofa: z.string().optional(),
@@ -12,13 +19,13 @@ export const Route = createFileRoute("/quote")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Request a Custom Quote — Colne Sofa LTD" },
+      { title: "Request a Custom Quote - Colne Sofa LTD" },
       {
         name: "description",
         content:
           "Tell us about your project and we'll prepare a custom sofa quote within two business days.",
       },
-      { property: "og:title", content: "Request a Custom Quote — Colne Sofa LTD" },
+      { property: "og:title", content: "Request a Custom Quote - Colne Sofa LTD" },
       { property: "og:description", content: "Bespoke sofas, made to your dimensions and fabric." },
     ],
   }),
@@ -27,8 +34,24 @@ export const Route = createFileRoute("/quote")({
 
 function QuotePage() {
   const { sofa } = Route.useSearch();
-  const preset = sofa ? getSofa(sofa) : undefined;
+  const [products, setProducts] = useState<QuoteProduct[]>([]);
   const [sent, setSent] = useState(false);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const { data } = await supabase
+        .from("sofas")
+        .select("slug, name, category")
+        .order("category", { ascending: true })
+        .order("name", { ascending: true });
+
+      if (data) setProducts(data);
+    }
+
+    fetchProducts();
+  }, []);
+
+  const preset = sofa ? products.find((product) => product.slug === sofa) : undefined;
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,14 +61,18 @@ function QuotePage() {
     }
 
     const form = new FormData(e.currentTarget);
-    const selectedModel = sofas.find((s) => s.slug === form.get("model"));
+    const selectedModel = products.find((product) => product.slug === form.get("model"));
+    const selectedModelLabel = selectedModel
+      ? `${selectedModel.name} - ${normalizeCollection(selectedModel.category)}`
+      : "No preference / not sure yet";
+
     const message = [
       "New quote request - Colne Sofa LTD",
       "",
       `Name: ${form.get("firstName") || ""} ${form.get("lastName") || ""}`.trim(),
       `Email: ${form.get("email") || ""}`,
       `Phone: ${form.get("phone") || ""}`,
-      `Sofa model: ${selectedModel ? `${selectedModel.name} - ${selectedModel.type}` : "No preference / not sure yet"}`,
+      `Product model: ${selectedModelLabel}`,
       `Fabric or leather: ${form.get("fabric") || ""}`,
       `Approximate dimensions: ${form.get("dimensions") || ""}`,
       `Delivery city: ${form.get("city") || ""}`,
@@ -69,7 +96,7 @@ function QuotePage() {
         <span className="italic text-primary">We&apos;ll reply within 48 hours.</span>
       </h1>
       <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-[#555555]">
-        Tell us about the sofa, the room, the fabric you have in mind. The more details, the more
+        Tell us about the sofa, bed, room, and fabric you have in mind. The more details, the more
         accurate our quote and sketch.
       </p>
 
@@ -81,10 +108,7 @@ function QuotePage() {
           </p>
         </div>
       ) : (
-        <form
-          className="mt-16 grid gap-8"
-          onSubmit={handleSubmit}
-        >
+        <form className="mt-16 grid gap-8" onSubmit={handleSubmit}>
           <div className="grid gap-6 sm:grid-cols-2">
             <Field label="First name" name="firstName" placeholder="First name" required />
             <Field label="Last name" name="lastName" placeholder="Last name" required />
@@ -96,7 +120,7 @@ function QuotePage() {
 
           <div>
             <label className="text-xs uppercase tracking-widest text-muted-foreground">
-              Sofa model
+              Product model
             </label>
             <select
               name="model"
@@ -104,9 +128,9 @@ function QuotePage() {
               className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/15"
             >
               <option value="">No preference / I&apos;m not sure yet</option>
-              {sofas.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.name} — {s.type}
+              {products.map((product) => (
+                <option key={product.slug} value={product.slug}>
+                  {product.name} - {normalizeCollection(product.category)}
                 </option>
               ))}
             </select>
@@ -121,7 +145,7 @@ function QuotePage() {
             <Field
               label="Approximate dimensions"
               name="dimensions"
-              placeholder="e.g. 240 × 95 cm"
+              placeholder="e.g. 240 x 95 cm"
             />
           </div>
 
@@ -133,7 +157,7 @@ function QuotePage() {
               name="details"
               rows={6}
               required
-              defaultValue={preset ? `I'm interested in the ${preset.name} (${preset.size}). ` : ""}
+              defaultValue={preset ? `I'm interested in the ${preset.name}. ` : ""}
               className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors placeholder:text-muted-foreground/55 focus:border-primary focus:ring-2 focus:ring-primary/15"
               placeholder="Tell us about the room, your timeline, and anything specific you have in mind."
             />
