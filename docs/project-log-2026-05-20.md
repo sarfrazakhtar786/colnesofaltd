@@ -104,7 +104,9 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
   - Contact/Footer
 - Kept the existing `site_settings.site_content` data shape unchanged.
 - Moved the home page about summary into the Home Hero tab.
-- Added a Contact/Footer tab that shows the current shared contact config as read-only context before moving it into editable settings later.
+- Added editable Contact/Footer settings for email, display phone, WhatsApp number, hours, and address lines.
+- Contact details now save to `site_settings.contact_details`.
+- The contact page, quote page WhatsApp target, and footer now load contact details from Supabase with safe defaults.
 
 ## Commits Pushed Today
 

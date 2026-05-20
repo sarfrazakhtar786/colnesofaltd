@@ -9,7 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Save } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { contactDetails } from "@/lib/contact";
+import {
+  type ContactDetails,
+  defaultContactDetails,
+  fetchContactDetails,
+} from "@/lib/contact";
 
 const defaultContent = {
   hero_title: "Sofas built the slow way, to be lived in for decades.",
@@ -48,17 +52,17 @@ function AdminContent() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [content, setContent] = useState(defaultContent);
+  const [contact, setContact] = useState<ContactDetails>(defaultContactDetails);
 
   useEffect(() => {
     fetchContent();
   }, []);
 
   async function fetchContent() {
-    const { data } = await supabase
-      .from("site_settings")
-      .select("*")
-      .eq("key", "site_content")
-      .single();
+    const [{ data }, contactData] = await Promise.all([
+      supabase.from("site_settings").select("*").eq("key", "site_content").single(),
+      fetchContactDetails(),
+    ]);
 
     if (data?.value) {
       setContent({
@@ -67,15 +71,17 @@ function AdminContent() {
         values: Array.isArray(data.value.values) ? data.value.values : defaultContent.values,
       });
     }
+    setContact(contactData);
 
     setLoading(false);
   }
 
   async function handleSave() {
     setSaving(true);
-    const { error } = await supabase
-      .from("site_settings")
-      .upsert({ key: "site_content", value: content });
+    const { error } = await supabase.from("site_settings").upsert([
+      { key: "site_content", value: content },
+      { key: "contact_details", value: contact },
+    ]);
 
     if (error) {
       alert("Error saving content: " + error.message);
@@ -83,6 +89,10 @@ function AdminContent() {
       alert("Content updated successfully!");
     }
     setSaving(false);
+  }
+
+  function updateContact<K extends keyof ContactDetails>(key: K, value: ContactDetails[K]) {
+    setContact((current) => ({ ...current, [key]: value }));
   }
 
   if (loading) {
@@ -262,24 +272,63 @@ function AdminContent() {
             <CardHeader>
               <CardTitle>Contact / Footer Settings</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                These values are currently shared from the site contact config. The next step is to
-                move them into editable admin settings.
-              </p>
-              <div className="grid gap-3 rounded-md border bg-muted/30 p-4 text-sm">
-                <p>
-                  <span className="font-medium">Email:</span> {contactDetails.email}
-                </p>
-                <p>
-                  <span className="font-medium">Phone:</span> {contactDetails.phoneDisplay}
-                </p>
-                <p>
-                  <span className="font-medium">Hours:</span> {contactDetails.hours}
-                </p>
-                <p>
-                  <span className="font-medium">Address:</span>{" "}
-                  {contactDetails.addressLines.join(", ")}
+            <CardContent className="space-y-5">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    value={contact.email}
+                    onChange={(e) => updateContact("email", e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Display Phone</Label>
+                  <Input
+                    value={contact.phoneDisplay}
+                    onChange={(e) => updateContact("phoneDisplay", e.target.value)}
+                    placeholder="07417 556531"
+                  />
+                </div>
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <Label>WhatsApp Number</Label>
+                  <Input
+                    value={contact.whatsappNumber}
+                    onChange={(e) => updateContact("whatsappNumber", e.target.value)}
+                    placeholder="447417556531"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Use country code format without plus sign, e.g. 447417556531.
+                  </p>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Opening Hours</Label>
+                  <Input
+                    value={contact.hours}
+                    onChange={(e) => updateContact("hours", e.target.value)}
+                    placeholder="Mon-Sat 10:00 - 18:00"
+                  />
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <Label>Address Lines</Label>
+                <Textarea
+                  value={contact.addressLines.join("\n")}
+                  onChange={(e) =>
+                    updateContact(
+                      "addressLines",
+                      e.target.value
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter(Boolean),
+                    )
+                  }
+                  rows={5}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Put each address line on its own line. This updates Contact page and Footer.
                 </p>
               </div>
             </CardContent>

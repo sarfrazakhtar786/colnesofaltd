@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { useState } from "react";
-import { contactDetails } from "@/lib/contact";
+import { useEffect, useState } from "react";
+import { contactDetails, fetchContactDetails, getPhoneHref } from "@/lib/contact";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -19,7 +19,14 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const [details, setDetails] = useState(contactDetails);
   const [sent, setSent] = useState(false);
+
+  useEffect(() => {
+    fetchContactDetails().then((nextDetails) => {
+      setDetails({ ...nextDetails, phoneHref: getPhoneHref(nextDetails.phoneDisplay) });
+    });
+  }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,7 +48,7 @@ function ContactPage() {
       `${form.get("message") || ""}`,
     ].join("\n");
 
-    const whatsappUrl = `https://wa.me/${contactDetails.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${details.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setSent(true);
   }
@@ -64,21 +71,21 @@ function ContactPage() {
             <p className="mt-3 flex items-start gap-3 text-[#555555]">
               <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <span>
-                {contactDetails.addressLines.map((line) => (
+                {details.addressLines.map((line) => (
                   <span key={line} className="block">
                     {line}
                   </span>
                 ))}
               </span>
             </p>
-            <p className="mt-3 text-sm text-muted-foreground">{contactDetails.hours}</p>
+            <p className="mt-3 text-sm text-muted-foreground">{details.hours}</p>
           </div>
           <div>
             <p className="eyebrow">Email</p>
             <p className="mt-3 flex items-center gap-3 text-[#555555]">
               <Mail className="h-5 w-5 text-primary" />
-              <a href={`mailto:${contactDetails.email}`} className="hover:text-primary">
-                {contactDetails.email}
+              <a href={`mailto:${details.email}`} className="hover:text-primary">
+                {details.email}
               </a>
             </p>
           </div>
@@ -86,8 +93,8 @@ function ContactPage() {
             <p className="eyebrow">Phone</p>
             <p className="mt-3 flex items-center gap-3 text-[#555555]">
               <Phone className="h-5 w-5 text-primary" />
-              <a href={contactDetails.phoneHref} className="hover:text-primary">
-                {contactDetails.phoneDisplay}
+              <a href={details.phoneHref} className="hover:text-primary">
+                {details.phoneDisplay}
               </a>
             </p>
           </div>

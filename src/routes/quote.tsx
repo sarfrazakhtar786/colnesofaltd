@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { contactDetails } from "@/lib/contact";
+import { contactDetails, fetchContactDetails } from "@/lib/contact";
 import { normalizeCollection } from "@/lib/collections";
 import { supabase } from "@/lib/supabase";
 
@@ -35,20 +35,25 @@ export const Route = createFileRoute("/quote")({
 function QuotePage() {
   const { sofa } = Route.useSearch();
   const [products, setProducts] = useState<QuoteProduct[]>([]);
+  const [details, setDetails] = useState(contactDetails);
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    async function fetchProducts() {
-      const { data } = await supabase
-        .from("sofas")
-        .select("slug, name, category")
-        .order("category", { ascending: true })
-        .order("name", { ascending: true });
+    async function fetchPageData() {
+      const [productsRes, contactDetailsRes] = await Promise.all([
+        supabase
+          .from("sofas")
+          .select("slug, name, category")
+          .order("category", { ascending: true })
+          .order("name", { ascending: true }),
+        fetchContactDetails(),
+      ]);
 
-      if (data) setProducts(data);
+      if (productsRes.data) setProducts(productsRes.data);
+      setDetails({ ...contactDetailsRes, phoneHref: contactDetails.phoneHref });
     }
 
-    fetchProducts();
+    fetchPageData();
   }, []);
 
   const preset = sofa ? products.find((product) => product.slug === sofa) : undefined;
@@ -82,7 +87,7 @@ function QuotePage() {
       `${form.get("details") || ""}`,
     ].join("\n");
 
-    const whatsappUrl = `https://wa.me/${contactDetails.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${details.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setSent(true);
   }

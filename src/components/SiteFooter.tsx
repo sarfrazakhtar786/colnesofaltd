@@ -1,7 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { contactDetails } from "@/lib/contact";
+import { useEffect, useState } from "react";
+import { contactDetails, fetchContactDetails, getPhoneHref } from "@/lib/contact";
 
 export function SiteFooter() {
+  const [details, setDetails] = useState(contactDetails);
+
+  useEffect(() => {
+    fetchContactDetails().then((nextDetails) => {
+      setDetails({ ...nextDetails, phoneHref: getPhoneHref(nextDetails.phoneDisplay) });
+    });
+  }, []);
+
   return (
     <footer className="mt-32 bg-[#111111] text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-4 lg:px-10">
@@ -43,17 +52,17 @@ export function SiteFooter() {
         <div>
           <p className="eyebrow text-primary">Visit</p>
           <ul className="mt-4 space-y-2 text-sm text-white/72">
-            {contactDetails.addressLines.map((line) => (
+            {details.addressLines.map((line) => (
               <li key={line}>{line}</li>
             ))}
             <li>
-              <a href={`mailto:${contactDetails.email}`} className="transition-colors hover:text-primary">
-                {contactDetails.email}
+              <a href={`mailto:${details.email}`} className="transition-colors hover:text-primary">
+                {details.email}
               </a>
             </li>
             <li>
-              <a href={contactDetails.phoneHref} className="transition-colors hover:text-primary">
-                {contactDetails.phoneDisplay}
+              <a href={details.phoneHref} className="transition-colors hover:text-primary">
+                {details.phoneDisplay}
               </a>
             </li>
           </ul>
