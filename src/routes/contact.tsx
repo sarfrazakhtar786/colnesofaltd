@@ -20,6 +20,31 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!e.currentTarget.checkValidity()) {
+      e.currentTarget.reportValidity();
+      return;
+    }
+
+    const form = new FormData(e.currentTarget);
+    const message = [
+      "New contact message - Colne Sofa LTD",
+      "",
+      `Name: ${form.get("firstName") || ""} ${form.get("lastName") || ""}`.trim(),
+      `Email: ${form.get("email") || ""}`,
+      `Subject: ${form.get("subject") || ""}`,
+      "",
+      "Message:",
+      `${form.get("message") || ""}`,
+    ].join("\n");
+
+    const whatsappUrl = `https://wa.me/${contactDetails.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    setSent(true);
+  }
+
   return (
     <>
       <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
@@ -69,16 +94,13 @@ function ContactPage() {
 
         <form
           className="space-y-6 lg:col-span-7 lg:col-start-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSent(true);
-          }}
+          onSubmit={handleSubmit}
         >
           {sent ? (
             <div className="rounded-sm border border-primary/30 bg-primary/5 p-10 text-center">
-              <h2 className="font-display text-3xl">Thank you.</h2>
+              <h2 className="font-display text-3xl">WhatsApp message prepared.</h2>
               <p className="mt-3 text-[#555555]">
-                We&apos;ll be in touch within two business days.
+                Please send the message in WhatsApp so our team can reply.
               </p>
             </div>
           ) : (
@@ -94,6 +116,7 @@ function ContactPage() {
                   Message
                 </label>
                 <textarea
+                  name="message"
                   required
                   rows={6}
                   className="mt-2 w-full rounded-sm border border-border bg-white px-4 py-3 text-base shadow-sm outline-none transition-colors placeholder:text-muted-foreground/55 focus:border-primary focus:ring-2 focus:ring-primary/15"
@@ -104,7 +127,7 @@ function ContactPage() {
                 type="submit"
                 className="mt-4 rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
               >
-                Send Message
+                Send on WhatsApp
               </button>
             </>
           )}

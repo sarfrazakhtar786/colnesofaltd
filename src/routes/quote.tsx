@@ -32,6 +32,10 @@ function QuotePage() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!e.currentTarget.checkValidity()) {
+      e.currentTarget.reportValidity();
+      return;
+    }
 
     const form = new FormData(e.currentTarget);
     const selectedModel = sofas.find((s) => s.slug === form.get("model"));
