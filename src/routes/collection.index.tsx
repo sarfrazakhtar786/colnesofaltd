@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { getPublicImageUrl } from "@/lib/images";
-import { Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
 import { normalizeCollection, productCollections } from "@/lib/collections";
 
 export const Route = createFileRoute("/collection/")({
@@ -100,7 +100,7 @@ function CollectionPage() {
                         key={product.id}
                         to="/collection/$slug"
                         params={{ slug: product.slug }}
-                        className="group rounded-sm border border-primary/25 bg-card p-3 shadow-[0_16px_45px_rgba(11,27,58,0.06)] transition-transform duration-300 hover:-translate-y-1"
+                        className="group rounded-sm border border-primary/20 bg-card p-3 shadow-[0_16px_45px_rgba(11,27,58,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/55 hover:shadow-[0_22px_55px_rgba(11,27,58,0.1)]"
                       >
                         <div className="aspect-[4/5] overflow-hidden bg-muted">
                           <img
@@ -109,14 +109,28 @@ function CollectionPage() {
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
                         </div>
-                        <div className="mt-6 px-1 pb-2">
-                          <div className="flex items-baseline justify-between gap-4">
-                            <h3 className="font-display text-2xl italic">{product.name}</h3>
+                        <div className="mt-6 space-y-4 px-1 pb-2">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <span className="rounded-sm border border-primary/20 bg-primary/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-primary">
+                              {normalizeCollection(product.category)}
+                            </span>
                             <p className="text-sm font-semibold text-primary">{product.price}</p>
+                          </div>
+                          <div>
+                            <h3 className="font-display text-2xl italic">{product.name}</h3>
+                            {getProductMeta(product) && (
+                              <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
+                                {getProductMeta(product)}
+                              </p>
+                            )}
                           </div>
                           <p className="mt-2 text-sm text-[#555555] line-clamp-2">
                             {product.description}
                           </p>
+                          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-secondary transition-colors group-hover:text-primary">
+                            View details
+                            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                          </span>
                         </div>
                       </Link>
                     ))}
@@ -139,4 +153,14 @@ function CollectionPage() {
       </div>
     </div>
   );
+}
+
+function getProductMeta(product: any) {
+  const dimensions =
+    product.width && product.depth
+      ? `${product.width} W x ${product.depth} D${product.height ? ` x ${product.height} H` : ""}`
+      : "";
+  const material = product.materials?.split(",")[0]?.trim() || "";
+
+  return [dimensions, material].filter(Boolean).join(" · ");
 }

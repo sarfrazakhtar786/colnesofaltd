@@ -117,6 +117,13 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added SQL setup file:
   - `docs/supabase-submissions-schema.sql`
 
+### Frontend product improvements
+
+- Improved collection and homepage product cards with collection labels, price placement, product metadata hints, and clearer `View details` affordance.
+- Added richer product detail sections for overview, dimensions, materials, and quote CTA.
+- Added a mobile sticky quote CTA on product detail pages.
+- Product detail quote buttons now preselect the current product on `/quote`.
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset
