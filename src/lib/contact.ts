@@ -3,5 +3,6 @@ export const contactDetails = {
   email: "colnesofaltd@gmail.com",
   phoneDisplay: "07417 556531",
   phoneHref: "tel:+447417556531",
+  whatsappNumber: "447417556531",
   hours: "Mon-Sat 10:00 - 18:00",
 };

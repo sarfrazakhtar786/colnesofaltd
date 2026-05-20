@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { sofas, getSofa } from "@/data/sofas";
 import { useState } from "react";
+import { contactDetails } from "@/lib/contact";
 
 const searchSchema = z.object({
   sofa: z.string().optional(),
@@ -29,6 +30,32 @@ function QuotePage() {
   const preset = sofa ? getSofa(sofa) : undefined;
   const [sent, setSent] = useState(false);
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = new FormData(e.currentTarget);
+    const selectedModel = sofas.find((s) => s.slug === form.get("model"));
+    const message = [
+      "New quote request - Colne Sofa LTD",
+      "",
+      `Name: ${form.get("firstName") || ""} ${form.get("lastName") || ""}`.trim(),
+      `Email: ${form.get("email") || ""}`,
+      `Phone: ${form.get("phone") || ""}`,
+      `Sofa model: ${selectedModel ? `${selectedModel.name} - ${selectedModel.type}` : "No preference / not sure yet"}`,
+      `Fabric or leather: ${form.get("fabric") || ""}`,
+      `Approximate dimensions: ${form.get("dimensions") || ""}`,
+      `Delivery city: ${form.get("city") || ""}`,
+      `Desired timeline: ${form.get("timeline") || ""}`,
+      "",
+      "Project details:",
+      `${form.get("details") || ""}`,
+    ].join("\n");
+
+    const whatsappUrl = `https://wa.me/${contactDetails.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    setSent(true);
+  }
+
   return (
     <section className="mx-auto max-w-5xl px-6 py-24 lg:px-10">
       <p className="eyebrow">Custom Order</p>
@@ -44,19 +71,15 @@ function QuotePage() {
 
       {sent ? (
         <div className="mt-16 rounded-sm border border-primary/30 bg-primary/5 p-12 text-center">
-          <h2 className="font-display text-4xl">Request received.</h2>
+          <h2 className="font-display text-4xl">WhatsApp message prepared.</h2>
           <p className="mt-4 text-[#555555]">
-            One of our designers will contact you within two business days with a quote and an
-            initial sketch.
+            Please send the message in WhatsApp so our team can reply with your quote.
           </p>
         </div>
       ) : (
         <form
           className="mt-16 grid gap-8"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSent(true);
-          }}
+          onSubmit={handleSubmit}
         >
           <div className="grid gap-6 sm:grid-cols-2">
             <Field label="First name" name="firstName" placeholder="First name" required />
@@ -125,7 +148,7 @@ function QuotePage() {
               type="submit"
               className="rounded-sm bg-primary px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
             >
-              Submit Request
+              Send on WhatsApp
             </button>
           </div>
         </form>
