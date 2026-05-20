@@ -94,6 +94,18 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added missing data badges for product image, price, description, dimensions, and materials.
 - Added a complete badge for products with all expected product data.
 
+### Content editor redesign
+
+- Reorganized the admin content editor into tabs:
+  - Home Hero
+  - Collection
+  - About Page
+  - Values
+  - Contact/Footer
+- Kept the existing `site_settings.site_content` data shape unchanged.
+- Moved the home page about summary into the Home Hero tab.
+- Added a Contact/Footer tab that shows the current shared contact config as read-only context before moving it into editable settings later.
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset

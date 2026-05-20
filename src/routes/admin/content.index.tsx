@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, Save } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { contactDetails } from "@/lib/contact";
 
 const defaultContent = {
   hero_title: "Sofas built the slow way, to be lived in for decades.",
@@ -105,100 +107,131 @@ function AdminContent() {
         </Button>
       </div>
 
-      <div className="grid gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Home Page - Hero Section</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-2">
-              <Label>Main Title</Label>
-              <Textarea
-                value={content.hero_title}
-                onChange={(e) => setContent({ ...content, hero_title: e.target.value })}
-                rows={2}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>Subtitle / Description</Label>
-              <Textarea
-                value={content.hero_subtitle}
-                onChange={(e) => setContent({ ...content, hero_subtitle: e.target.value })}
-                rows={3}
-              />
-            </div>
-            <ImageUploadField
-              id="hero_image"
-              label="Hero Background Image URL"
-              value={content.hero_image}
-              onChange={(hero_image) => setContent({ ...content, hero_image })}
-              folder="hero"
-              hint="Recommended: 2400 x 1350 px or larger, landscape 16:9."
-              aspect="hero"
-            />
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="home" className="space-y-6">
+        <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 rounded-sm border bg-card p-2">
+          <TabsTrigger value="home">Home Hero</TabsTrigger>
+          <TabsTrigger value="collection">Collection</TabsTrigger>
+          <TabsTrigger value="about">About Page</TabsTrigger>
+          <TabsTrigger value="values">Values</TabsTrigger>
+          <TabsTrigger value="brand">Contact/Footer</TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Collection Page - Header</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-2">
-              <Label>Collection Title</Label>
-              <Input
-                value={content.collection_title}
-                onChange={(e) => setContent({ ...content, collection_title: e.target.value })}
+        <TabsContent value="home" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Home Page - Hero Section</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid gap-2">
+                <Label>Main Title</Label>
+                <Textarea
+                  value={content.hero_title}
+                  onChange={(e) => setContent({ ...content, hero_title: e.target.value })}
+                  rows={2}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>Subtitle / Description</Label>
+                <Textarea
+                  value={content.hero_subtitle}
+                  onChange={(e) => setContent({ ...content, hero_subtitle: e.target.value })}
+                  rows={3}
+                />
+              </div>
+              <ImageUploadField
+                id="hero_image"
+                label="Hero Background Image URL"
+                value={content.hero_image}
+                onChange={(hero_image) => setContent({ ...content, hero_image })}
+                folder="hero"
+                hint="Recommended: 2400 x 1350 px or larger, landscape 16:9."
+                aspect="hero"
               />
-            </div>
-            <div className="grid gap-2">
-              <Label>Collection Description</Label>
-              <Textarea
-                value={content.collection_description}
-                onChange={(e) =>
-                  setContent({ ...content, collection_description: e.target.value })
-                }
-                rows={3}
-              />
-            </div>
-          </CardContent>
-        </Card>
+              <div className="grid gap-2 border-t pt-5">
+                <Label>Home About Summary</Label>
+                <p className="text-xs text-muted-foreground">
+                  This text appears in the homepage philosophy/about section.
+                </p>
+                <Textarea
+                  value={content.about_text}
+                  onChange={(e) => setContent({ ...content, about_text: e.target.value })}
+                  rows={4}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>About Us Page</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid gap-2">
-              <Label>About Hero Title</Label>
-              <Textarea
-                value={content.about_hero_title}
-                onChange={(e) => setContent({ ...content, about_hero_title: e.target.value })}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>About Hero Subtitle</Label>
-              <Textarea
-                value={content.about_hero_subtitle}
-                onChange={(e) =>
-                  setContent({ ...content, about_hero_subtitle: e.target.value })
-                }
-                rows={4}
-              />
-            </div>
-            <ImageUploadField
-              id="about_image"
-              label="Main Image URL"
-              value={content.about_image}
-              onChange={(about_image) => setContent({ ...content, about_image })}
-              folder="about"
-              hint="Recommended: 1600 x 1200 px or larger."
-            />
+        <TabsContent value="collection" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Collection Page - Header</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-2">
+                <Label>Collection Title</Label>
+                <Input
+                  value={content.collection_title}
+                  onChange={(e) => setContent({ ...content, collection_title: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>Collection Description</Label>
+                <Textarea
+                  value={content.collection_description}
+                  onChange={(e) =>
+                    setContent({ ...content, collection_description: e.target.value })
+                  }
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-            <div className="pt-4 border-t space-y-4">
-              <h3 className="font-medium">Company Values</h3>
+        <TabsContent value="about" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>About Us Page</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-2">
+                <Label>About Hero Title</Label>
+                <Textarea
+                  value={content.about_hero_title}
+                  onChange={(e) => setContent({ ...content, about_hero_title: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>About Hero Subtitle</Label>
+                <Textarea
+                  value={content.about_hero_subtitle}
+                  onChange={(e) =>
+                    setContent({ ...content, about_hero_subtitle: e.target.value })
+                  }
+                  rows={4}
+                />
+              </div>
+              <ImageUploadField
+                id="about_image"
+                label="Main Image URL"
+                value={content.about_image}
+                onChange={(about_image) => setContent({ ...content, about_image })}
+                folder="about"
+                hint="Recommended: 1600 x 1200 px or larger."
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="values" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Company Values</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
               {content.values.map((value, index) => (
-                <div key={index} className="space-y-2 p-3 border rounded-md">
+                <div key={index} className="space-y-3 rounded-md border p-4">
                   <Label>Value {index + 1} Title</Label>
                   <Input
                     value={value.t}
@@ -216,29 +249,43 @@ function AdminContent() {
                       values[index] = { ...values[index], d: e.target.value };
                       setContent({ ...content, values });
                     }}
+                    rows={3}
                   />
                 </div>
               ))}
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Home Page - About Section</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-2">
-              <Label>Quick Summary (Used on Home Page)</Label>
-              <Textarea
-                value={content.about_text}
-                onChange={(e) => setContent({ ...content, about_text: e.target.value })}
-                rows={4}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="brand" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact / Footer Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                These values are currently shared from the site contact config. The next step is to
+                move them into editable admin settings.
+              </p>
+              <div className="grid gap-3 rounded-md border bg-muted/30 p-4 text-sm">
+                <p>
+                  <span className="font-medium">Email:</span> {contactDetails.email}
+                </p>
+                <p>
+                  <span className="font-medium">Phone:</span> {contactDetails.phoneDisplay}
+                </p>
+                <p>
+                  <span className="font-medium">Hours:</span> {contactDetails.hours}
+                </p>
+                <p>
+                  <span className="font-medium">Address:</span>{" "}
+                  {contactDetails.addressLines.join(", ")}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
