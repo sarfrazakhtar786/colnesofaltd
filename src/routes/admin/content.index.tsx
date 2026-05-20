@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, Save } from "lucide-react";
+import { ImageUrlPreview } from "@/components/admin/ImageUrlPreview";
 
 const defaultContent = {
   hero_title: "Sofas built the slow way, to be lived in for decades.",
@@ -128,10 +129,19 @@ function AdminContent() {
             </div>
             <div className="grid gap-2">
               <Label>Hero Background Image URL</Label>
+              <p className="text-xs text-muted-foreground">
+                Recommended hero image resolution: 2400 x 1350 px or larger, landscape 16:9.
+              </p>
               <Input
                 value={content.hero_image}
                 onChange={(e) => setContent({ ...content, hero_image: e.target.value })}
                 placeholder="https://..."
+              />
+              <ImageUrlPreview
+                url={content.hero_image}
+                label="Hero image preview"
+                hint="Best: 2400 x 1350 px"
+                aspect="hero"
               />
             </div>
           </CardContent>
@@ -190,6 +200,11 @@ function AdminContent() {
                 value={content.about_image}
                 onChange={(e) => setContent({ ...content, about_image: e.target.value })}
                 placeholder="https://..."
+              />
+              <ImageUrlPreview
+                url={content.about_image}
+                label="About page image preview"
+                hint="Best: 1600 x 1200 px"
               />
             </div>
 

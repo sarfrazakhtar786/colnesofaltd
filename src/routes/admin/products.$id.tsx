@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { ImageUrlPreview } from "@/components/admin/ImageUrlPreview";
 
 const emptyProduct = {
   name: "",
@@ -146,6 +147,11 @@ function EditProduct() {
                 value={formData.image_url}
                 onChange={handleChange}
                 placeholder="e.g. /sofa-chesterfield-7mql-6zd.png or https://..."
+              />
+              <ImageUrlPreview
+                url={formData.image_url}
+                label="Product image preview"
+                hint="Best: 1600 x 1200 px"
               />
             </div>
 
