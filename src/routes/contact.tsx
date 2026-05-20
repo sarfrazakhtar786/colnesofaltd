@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { contactDetails, fetchContactDetails, getPhoneHref } from "@/lib/contact";
+import { saveContactSubmission } from "@/lib/submissions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -28,7 +29,7 @@ function ContactPage() {
     });
   }, []);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!e.currentTarget.checkValidity()) {
       e.currentTarget.reportValidity();
@@ -36,17 +37,30 @@ function ContactPage() {
     }
 
     const form = new FormData(e.currentTarget);
+    const submission = {
+      first_name: String(form.get("firstName") || ""),
+      last_name: String(form.get("lastName") || ""),
+      email: String(form.get("email") || ""),
+      phone: String(form.get("phone") || ""),
+      subject: String(form.get("subject") || ""),
+      message: String(form.get("message") || ""),
+    };
     const message = [
       "New contact message - Colne Sofa LTD",
       "",
-      `Name: ${form.get("firstName") || ""} ${form.get("lastName") || ""}`.trim(),
-      `Email: ${form.get("email") || ""}`,
-      `Phone: ${form.get("phone") || ""}`,
-      `Subject: ${form.get("subject") || ""}`,
+      `Name: ${submission.first_name} ${submission.last_name}`.trim(),
+      `Email: ${submission.email}`,
+      `Phone: ${submission.phone}`,
+      `Subject: ${submission.subject}`,
       "",
       "Message:",
-      `${form.get("message") || ""}`,
+      submission.message,
     ].join("\n");
+
+    const { error } = await saveContactSubmission(submission);
+    if (error) {
+      console.warn("Contact submission was not saved:", error.message);
+    }
 
     const whatsappUrl = `https://wa.me/${details.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");

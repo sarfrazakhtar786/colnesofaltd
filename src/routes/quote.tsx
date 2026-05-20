@@ -4,6 +4,7 @@ import { z } from "zod";
 import { contactDetails, fetchContactDetails } from "@/lib/contact";
 import { normalizeCollection } from "@/lib/collections";
 import { supabase } from "@/lib/supabase";
+import { saveQuoteRequest } from "@/lib/submissions";
 
 type QuoteProduct = {
   slug: string;
@@ -58,7 +59,7 @@ function QuotePage() {
 
   const preset = sofa ? products.find((product) => product.slug === sofa) : undefined;
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!e.currentTarget.checkValidity()) {
       e.currentTarget.reportValidity();
@@ -70,22 +71,39 @@ function QuotePage() {
     const selectedModelLabel = selectedModel
       ? `${selectedModel.name} - ${normalizeCollection(selectedModel.category)}`
       : "No preference / not sure yet";
+    const submission = {
+      first_name: String(form.get("firstName") || ""),
+      last_name: String(form.get("lastName") || ""),
+      email: String(form.get("email") || ""),
+      phone: String(form.get("phone") || ""),
+      product_model: selectedModelLabel,
+      fabric: String(form.get("fabric") || ""),
+      dimensions: String(form.get("dimensions") || ""),
+      city: String(form.get("city") || ""),
+      timeline: String(form.get("timeline") || ""),
+      details: String(form.get("details") || ""),
+    };
 
     const message = [
       "New quote request - Colne Sofa LTD",
       "",
-      `Name: ${form.get("firstName") || ""} ${form.get("lastName") || ""}`.trim(),
-      `Email: ${form.get("email") || ""}`,
-      `Phone: ${form.get("phone") || ""}`,
-      `Product model: ${selectedModelLabel}`,
-      `Fabric or leather: ${form.get("fabric") || ""}`,
-      `Approximate dimensions: ${form.get("dimensions") || ""}`,
-      `Delivery city: ${form.get("city") || ""}`,
-      `Desired timeline: ${form.get("timeline") || ""}`,
+      `Name: ${submission.first_name} ${submission.last_name}`.trim(),
+      `Email: ${submission.email}`,
+      `Phone: ${submission.phone}`,
+      `Product model: ${submission.product_model}`,
+      `Fabric or leather: ${submission.fabric}`,
+      `Approximate dimensions: ${submission.dimensions}`,
+      `Delivery city: ${submission.city}`,
+      `Desired timeline: ${submission.timeline}`,
       "",
       "Project details:",
-      `${form.get("details") || ""}`,
+      submission.details,
     ].join("\n");
+
+    const { error } = await saveQuoteRequest(submission);
+    if (error) {
+      console.warn("Quote request was not saved:", error.message);
+    }
 
     const whatsappUrl = `https://wa.me/${details.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");

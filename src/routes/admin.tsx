@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { LayoutDashboard, ShoppingBag, Home, LogOut, Loader2 } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Home, Inbox, LogOut, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
@@ -83,6 +83,14 @@ function AdminLayout() {
           >
             <Home className="h-4 w-4" />
             Page Content
+          </Link>
+          <Link
+            to="/admin/submissions"
+            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+            activeProps={{ className: "bg-muted font-medium text-primary" }}
+          >
+            <Inbox className="h-4 w-4" />
+            Requests
           </Link>
           <div className="pt-4 mt-4 border-t">
             <button

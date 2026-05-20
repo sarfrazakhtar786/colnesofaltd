@@ -108,6 +108,15 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Contact details now save to `site_settings.contact_details`.
 - The contact page, quote page WhatsApp target, and footer now load contact details from Supabase with safe defaults.
 
+### Submissions inbox
+
+- Added Supabase submission helpers for contact messages and quote requests.
+- Contact and quote forms now attempt to save submissions before opening WhatsApp.
+- Added `/admin/submissions` Requests inbox with contact/quote filtering.
+- Added request status tracking in admin: `New`, `Contacted`, `Quoted`, `Closed`.
+- Added SQL setup file:
+  - `docs/supabase-submissions-schema.sql`
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset
