@@ -86,6 +86,14 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Updated the `/quote` page product dropdown to load live products from Supabase instead of the old static sofa data file.
 - Added a phone number field to the `/contact` form and included it in the WhatsApp message.
 
+### Product management
+
+- Improved the admin products table with search by name, slug, collection, price, description, and materials.
+- Added collection filtering for Sofa Collection and Bed Collection.
+- Added a live product view action from the admin table.
+- Added missing data badges for product image, price, description, dimensions, and materials.
+- Added a complete badge for products with all expected product data.
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset
