@@ -61,6 +61,8 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added a reusable admin image upload field that uploads selected files to Supabase Storage bucket `site-images`.
 - Uploaded files are stored in the relevant bucket folder, then the public URL is automatically placed into the form field.
 - The database still stores only the public image URL, not the image file itself.
+- Added a Media Library inside each image field so previously uploaded images can be selected again without copying URLs from Supabase.
+- Added a guarded delete action for unused Storage images.
 - Upload fields were added for:
   - Home hero image: `site-images/hero/`
   - About page image: `site-images/about/`
