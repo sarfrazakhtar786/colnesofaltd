@@ -153,6 +153,13 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Made the product list table horizontally scrollable on narrow screens.
 - Updated product add/edit forms to use single-column mobile layouts.
 
+### Product management refinements
+
+- Added product list status filters for Complete and Needs work.
+- Added missing-field filters for image, price, description, dimensions, and materials.
+- Added collection/status count summaries.
+- Added multi-select product rows with bulk collection move and bulk delete actions.
+
 ### Public mobile responsiveness
 
 - Tightened the mobile header logo width and spacing for narrow screens.
