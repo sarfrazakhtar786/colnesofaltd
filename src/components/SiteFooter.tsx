@@ -15,10 +15,11 @@ export function SiteFooter() {
     <footer className="mt-32 bg-[#111111] text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-4 lg:px-10">
         <div className="lg:col-span-2">
-          <div className="flex items-baseline gap-1.5">
-            <span className="font-display text-2xl text-primary">Colne</span>
-            <span className="font-display text-2xl italic text-primary">Sofa LTD</span>
-          </div>
+          <img
+            src="/colne-sofa-logo-navbar-light.png"
+            alt="Colne Sofa LTD"
+            className="h-16 w-auto max-w-[300px] object-contain"
+          />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
             Hand-crafted sofas made to order in our atelier. Sustainable materials, lifetime frames,
             and a quiet sense of luxury.

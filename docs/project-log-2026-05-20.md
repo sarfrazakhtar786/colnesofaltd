@@ -135,6 +135,8 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added richer product detail sections for overview, dimensions, materials, and quote CTA.
 - Added a mobile sticky quote CTA on product detail pages.
 - Product detail quote buttons now preselect the current product on `/quote`.
+- Added homepage trust points below the hero for UK-made quality, custom sizes, and premium materials.
+- Updated the footer to use the real Colne Sofa LTD logo image instead of a text-only wordmark.
 
 ### Admin security
 

@@ -4,8 +4,26 @@ import { supabase } from "@/lib/supabase";
 import { getPublicImageUrl } from "@/lib/images";
 import heroSofaDefault from "@/assets/hero-sofa.jpg";
 import craftsman from "@/assets/craftsman.jpg";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2, Ruler, ShieldCheck, Sparkles } from "lucide-react";
 import { normalizeCollection } from "@/lib/collections";
+
+const trustPoints = [
+  {
+    title: "Made in the UK",
+    description: "Built by skilled upholsterers with proper workshop finishing.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Custom sizes",
+    description: "Adjust dimensions, fabric, colour, and layout for your room.",
+    icon: Ruler,
+  },
+  {
+    title: "Premium materials",
+    description: "Hardwood frames, refined fabrics, and sofa-grade cushioning.",
+    icon: Sparkles,
+  },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -93,6 +111,34 @@ function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* TRUST POINTS */}
+      <section className="border-y border-primary/15 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-0 px-6 py-5 sm:grid-cols-3 lg:px-10">
+          {trustPoints.map((point) => {
+            const Icon = point.icon;
+
+            return (
+              <div
+                key={point.title}
+                className="flex gap-4 border-primary/15 py-5 sm:px-5 sm:first:pl-0 sm:not(:last-child):border-r"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-semibold uppercase tracking-widest text-secondary">
+                    {point.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-relaxed text-[#555555]">
+                    {point.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
