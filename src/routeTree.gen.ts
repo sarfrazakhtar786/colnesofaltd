@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CollectionIndexRouteImport } from './routes/collection.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as CollectionSlugRouteImport } from './routes/collection.$slug'
+import { Route as AdminUsersIndexRouteImport } from './routes/admin/users.index'
 import { Route as AdminSubmissionsIndexRouteImport } from './routes/admin/submissions.index'
 import { Route as AdminProductsIndexRouteImport } from './routes/admin/products.index'
 import { Route as AdminContentIndexRouteImport } from './routes/admin/content.index'
@@ -69,6 +70,11 @@ const CollectionSlugRoute = CollectionSlugRouteImport.update({
   path: '/collection/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSubmissionsIndexRoute = AdminSubmissionsIndexRouteImport.update({
   id: '/submissions/',
   path: '/submissions/',
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/admin/content/': typeof AdminContentIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/submissions/': typeof AdminSubmissionsIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/admin/content': typeof AdminContentIndexRoute
   '/admin/products': typeof AdminProductsIndexRoute
   '/admin/submissions': typeof AdminSubmissionsIndexRoute
+  '/admin/users': typeof AdminUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/admin/content/': typeof AdminContentIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/submissions/': typeof AdminSubmissionsIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/admin/content/'
     | '/admin/products/'
     | '/admin/submissions/'
+    | '/admin/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/products'
     | '/admin/submissions'
+    | '/admin/users'
   id:
     | '__root__'
     | '/'
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/admin/content/'
     | '/admin/products/'
     | '/admin/submissions/'
+    | '/admin/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -269,6 +281,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/users/': {
+      id: '/admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminUsersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/submissions/': {
       id: '/admin/submissions/'
       path: '/submissions'
@@ -314,6 +333,7 @@ interface AdminRouteChildren {
   AdminContentIndexRoute: typeof AdminContentIndexRoute
   AdminProductsIndexRoute: typeof AdminProductsIndexRoute
   AdminSubmissionsIndexRoute: typeof AdminSubmissionsIndexRoute
+  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -323,6 +343,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminContentIndexRoute: AdminContentIndexRoute,
   AdminProductsIndexRoute: AdminProductsIndexRoute,
   AdminSubmissionsIndexRoute: AdminSubmissionsIndexRoute,
+  AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

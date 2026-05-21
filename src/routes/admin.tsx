@@ -1,7 +1,16 @@
 import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Home, Inbox, LayoutDashboard, Loader2, LogOut, ShieldAlert, ShoppingBag } from "lucide-react";
+import {
+  Home,
+  Inbox,
+  LayoutDashboard,
+  Loader2,
+  LogOut,
+  ShieldAlert,
+  ShoppingBag,
+  Users,
+} from "lucide-react";
 import { isCurrentUserAdmin } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
 
@@ -132,6 +141,14 @@ function AdminLayout() {
           >
             <Inbox className="h-4 w-4" />
             Requests
+          </Link>
+          <Link
+            to="/admin/users"
+            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
+            activeProps={{ className: "bg-muted font-medium text-primary" }}
+          >
+            <Users className="h-4 w-4" />
+            Admin Users
           </Link>
           <div className="pt-4 mt-4 border-t">
             <button

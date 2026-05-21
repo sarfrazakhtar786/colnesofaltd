@@ -133,6 +133,9 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
   - `docs/supabase-admin-security.sql`
 - Smoothed the admin login redirect by replacing full browser reloads with app navigation.
 - Prevented repeated admin session checks while moving between admin pages.
+- Added an Admin Users management screen at `/admin/users`.
+- Added a SQL migration for admin email whitelist management:
+  - `docs/supabase-admin-users-management.sql`
 
 ## Commits Pushed Today
 
