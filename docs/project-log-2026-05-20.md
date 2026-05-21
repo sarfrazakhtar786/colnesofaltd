@@ -136,6 +136,8 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added an Admin Users management screen at `/admin/users`.
 - Added a SQL migration for admin email whitelist management:
   - `docs/supabase-admin-users-management.sql`
+- Added a database-level guard to prevent deleting the final admin:
+  - `docs/supabase-last-admin-guard.sql`
 
 ## Commits Pushed Today
 
