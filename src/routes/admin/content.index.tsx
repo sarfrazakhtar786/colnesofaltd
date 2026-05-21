@@ -6,9 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Loader2, Save } from "lucide-react";
+import { Eye, Loader2, Mail, MapPin, Phone, Save } from "lucide-react";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { getPublicImageUrl } from "@/lib/images";
 import {
   type ContactDetails,
   defaultContactDetails,
@@ -51,6 +59,7 @@ export const Route = createFileRoute("/admin/content/")({
 function AdminContent() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [content, setContent] = useState(defaultContent);
   const [contact, setContact] = useState<ContactDetails>(defaultContactDetails);
 
@@ -107,15 +116,28 @@ function AdminContent() {
     <div className="space-y-6 max-w-4xl pb-20">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl font-display">Manage Site Content</h1>
-        <Button onClick={handleSave} disabled={saving}>
-          {saving ? (
-            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-          ) : (
-            <Save className="h-4 w-4 mr-2" />
-          )}
-          Save Changes
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button type="button" variant="outline" onClick={() => setPreviewOpen(true)}>
+            <Eye className="h-4 w-4 mr-2" />
+            Preview Changes
+          </Button>
+          <Button onClick={handleSave} disabled={saving}>
+            {saving ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4 mr-2" />
+            )}
+            Save Changes
+          </Button>
+        </div>
       </div>
+
+      <ContentPreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        content={content}
+        contact={contact}
+      />
 
       <Tabs defaultValue="home" className="space-y-6">
         <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 rounded-sm border bg-card p-2">
@@ -336,5 +358,141 @@ function AdminContent() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function ContentPreviewDialog({
+  open,
+  onOpenChange,
+  content,
+  contact,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  content: typeof defaultContent;
+  contact: ContactDetails;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[92vh] max-w-6xl overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Eye className="h-5 w-5 text-primary" />
+            Preview Changes
+          </DialogTitle>
+          <DialogDescription>
+            Review the main website sections before saving them to Supabase.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          <section className="overflow-hidden rounded-sm border bg-background">
+            <div className="relative isolate min-h-[360px] p-6 sm:p-10">
+              {content.hero_image && (
+                <img
+                  src={getPublicImageUrl(content.hero_image)}
+                  alt="Hero preview"
+                  className="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-75 lg:w-[58%]"
+                />
+              )}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/95 to-background/30" />
+              <p className="eyebrow">Home Hero</p>
+              <h2 className="mt-4 max-w-2xl font-display text-4xl leading-tight text-foreground sm:text-5xl">
+                {content.hero_title || "Untitled hero"}
+              </h2>
+              <p className="mt-5 max-w-xl leading-relaxed text-[#555555]">
+                {content.hero_subtitle || "No hero subtitle entered yet."}
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <span className="inline-flex justify-center rounded-sm bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground">
+                  See the Collection
+                </span>
+                <span className="inline-flex justify-center rounded-sm bg-secondary px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-secondary-foreground">
+                  Request a Quote
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <section className="rounded-sm border bg-card p-6">
+              <p className="eyebrow">Collection Header</p>
+              <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
+                {content.collection_title || "Untitled collection"}
+              </h2>
+              <p className="mt-4 leading-relaxed text-[#555555]">
+                {content.collection_description || "No collection description entered yet."}
+              </p>
+            </section>
+
+            <section className="rounded-sm border bg-card p-6">
+              <p className="eyebrow">Contact / Footer</p>
+              <div className="mt-4 space-y-3 text-sm text-[#555555]">
+                <p className="flex gap-3">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <span>
+                    {contact.addressLines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </span>
+                </p>
+                <p className="flex items-center gap-3">
+                  <Mail className="h-4 w-4 shrink-0 text-primary" />
+                  {contact.email}
+                </p>
+                <p className="flex items-center gap-3">
+                  <Phone className="h-4 w-4 shrink-0 text-primary" />
+                  {contact.phoneDisplay}
+                </p>
+                <p className="text-muted-foreground">{contact.hours}</p>
+              </div>
+            </section>
+          </div>
+
+          <section className="rounded-sm border bg-card p-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+              <div>
+                <p className="eyebrow">About Page</p>
+                <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
+                  {content.about_hero_title || "Untitled about page"}
+                </h2>
+                <p className="mt-4 leading-relaxed text-[#555555]">
+                  {content.about_hero_subtitle || "No about subtitle entered yet."}
+                </p>
+              </div>
+              <div className="overflow-hidden rounded-sm border bg-muted">
+                {content.about_image ? (
+                  <img
+                    src={getPublicImageUrl(content.about_image)}
+                    alt="About preview"
+                    className="aspect-[16/10] h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex aspect-[16/10] items-center justify-center text-sm text-muted-foreground">
+                    No about image selected
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-sm border bg-card p-6">
+            <p className="eyebrow">Company Values</p>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {content.values.map((value, index) => (
+                <div key={index} className="border-l-2 border-primary pl-4">
+                  <h3 className="font-display text-xl">{value.t || `Value ${index + 1}`}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#555555]">
+                    {value.d || "No description entered yet."}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

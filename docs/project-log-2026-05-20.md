@@ -114,6 +114,12 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Contact details now save to `site_settings.contact_details`.
 - The contact page, quote page WhatsApp target, and footer now load contact details from Supabase with safe defaults.
 
+### Content preview before publish
+
+- Added a `Preview Changes` action to the admin content editor.
+- Added a preview dialog for Home Hero, Collection Header, About Page, Company Values, and Contact/Footer content.
+- Preview uses the current unsaved form state, so admins can review text and image changes before clicking `Save Changes`.
+
 ### Submissions inbox
 
 - Added Supabase submission helpers for contact messages and quote requests.
