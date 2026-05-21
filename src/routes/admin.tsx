@@ -83,7 +83,7 @@ function AdminLayout() {
   function AdminBrand() {
     return (
       <Link to="/" className="font-display text-xl tracking-tight">
-        Sofa Studio <span className="text-primary text-xs uppercase">Admin</span>
+        Colne Sofa <span className="text-primary text-xs uppercase">Admin</span>
       </Link>
     );
   }
