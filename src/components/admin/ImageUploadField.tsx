@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { Images, ImageUp, Loader2, Trash2 } from "lucide-react";
+import { AlertTriangle, Images, ImageUp, Loader2, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +25,7 @@ type LibraryImage = {
   name: string;
   path: string;
   publicUrl: string;
+  usage: string[];
 };
 
 function slugifyFileName(name: string) {
@@ -36,6 +38,33 @@ function slugifyFileName(name: string) {
     .replace(/^-+|-+$/g, "");
 
   return `${baseName || "image"}-${Date.now()}.${extension}`;
+}
+
+function valueContainsImage(value: unknown, needles: string[]): boolean {
+  if (typeof value === "string") {
+    return needles.some((needle) => value.includes(needle));
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((item) => valueContainsImage(item, needles));
+  }
+
+  if (value && typeof value === "object") {
+    return Object.values(value).some((item) => valueContainsImage(item, needles));
+  }
+
+  return false;
+}
+
+function getImageNeedles(image: Pick<LibraryImage, "path" | "publicUrl">) {
+  const encodedPath = image.path
+    .split("/")
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+
+  return Array.from(
+    new Set([image.publicUrl, image.path, encodedPath, decodeURIComponent(image.publicUrl)]),
+  );
 }
 
 export function ImageUploadField({
@@ -86,28 +115,67 @@ export function ImageUploadField({
 
   async function fetchLibrary() {
     setLibraryLoading(true);
-    const { data, error } = await supabase.storage.from(BUCKET_NAME).list(folder, {
-      limit: 100,
-      sortBy: { column: "created_at", order: "desc" },
-    });
+    const [libraryRes, productsRes, settingsRes] = await Promise.all([
+      supabase.storage.from(BUCKET_NAME).list(folder, {
+        limit: 100,
+        sortBy: { column: "created_at", order: "desc" },
+      }),
+      supabase.from("sofas").select("name, image_url"),
+      supabase.from("site_settings").select("key, value"),
+    ]);
 
-    if (error) {
-      alert("Media library could not be loaded: " + error.message);
+    if (libraryRes.error) {
+      alert("Media library could not be loaded: " + libraryRes.error.message);
       setLibraryLoading(false);
       return;
     }
 
+    const usageCheckError = productsRes.error || settingsRes.error;
+    if (usageCheckError) {
+      alert(
+        "Media library loaded, but image usage could not be checked. Delete actions will stay disabled.",
+      );
+    }
+
     const images =
-      data
+      libraryRes.data
         ?.filter((file) => file.name && file.id)
         .map((file) => {
           const path = `${folder}/${file.name}`;
           const { data: publicData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(path);
-
-          return {
+          const image = {
             name: file.name,
             path,
             publicUrl: publicData.publicUrl,
+          };
+          const needles = getImageNeedles(image);
+          const usage: string[] = [];
+
+          if (valueContainsImage(value, needles)) {
+            usage.push("Current field");
+          }
+
+          if (usageCheckError) {
+            usage.push("Usage check unavailable");
+          }
+
+          productsRes.data?.forEach((product) => {
+            if (valueContainsImage(product.image_url, needles)) {
+              usage.push(`Product: ${product.name}`);
+            }
+          });
+
+          settingsRes.data?.forEach((setting) => {
+            if (valueContainsImage(setting.value, needles)) {
+              usage.push(
+                setting.key === "site_content" ? "Site content" : `Setting: ${setting.key}`,
+              );
+            }
+          });
+
+          return {
+            ...image,
+            usage: Array.from(new Set(usage)),
           };
         }) || [];
 
@@ -124,8 +192,15 @@ export function ImageUploadField({
   }
 
   async function deleteImage(image: LibraryImage) {
+    if (image.usage.length > 0) {
+      alert(
+        `This image is still used in: ${image.usage.join(", ")}. Remove it there first, then refresh the library.`,
+      );
+      return;
+    }
+
     const confirmed = window.confirm(
-      "Delete this image from Supabase Storage? If any page is using this URL, that image will stop loading.",
+      "Delete this unused image from Supabase Storage? This cannot be undone.",
     );
 
     if (!confirmed) return;
@@ -220,6 +295,22 @@ export function ImageUploadField({
                     <p className="truncate text-xs text-muted-foreground" title={image.name}>
                       {image.name}
                     </p>
+                    <div className="min-h-6">
+                      {image.usage.length > 0 ? (
+                        <Badge
+                          variant="outline"
+                          className="max-w-full border-amber-200 bg-amber-50 text-amber-700"
+                          title={image.usage.join(", ")}
+                        >
+                          <AlertTriangle className="mr-1 h-3 w-3 shrink-0" />
+                          <span className="truncate">Used in {image.usage.length} place(s)</span>
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="border-green-200 bg-green-50 text-green-700">
+                          Unused
+                        </Badge>
+                      )}
+                    </div>
                     <div className="flex gap-2">
                       <Button
                         type="button"
@@ -235,7 +326,13 @@ export function ImageUploadField({
                         size="icon"
                         className="h-8 w-8 text-destructive hover:text-destructive"
                         onClick={() => deleteImage(image)}
+                        disabled={image.usage.length > 0}
                         aria-label={`Delete ${image.name}`}
+                        title={
+                          image.usage.length > 0
+                            ? `Used in: ${image.usage.join(", ")}`
+                            : `Delete ${image.name}`
+                        }
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

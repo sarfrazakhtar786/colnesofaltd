@@ -63,6 +63,8 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - The database still stores only the public image URL, not the image file itself.
 - Added a Media Library inside each image field so previously uploaded images can be selected again without copying URLs from Supabase.
 - Added a guarded delete action for unused Storage images.
+- Improved Media Library cleanup with site-wide usage checks before delete.
+- Used images are now marked in the library and delete is disabled until the image is removed from products/content first.
 - Upload fields were added for:
   - Home hero image: `site-images/hero/`
   - About page image: `site-images/about/`
