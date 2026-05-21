@@ -64,12 +64,12 @@ function AboutPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-4xl px-6 py-28 text-center lg:px-10">
+      <section className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-28 lg:px-10">
         <p className="eyebrow">Since 1978</p>
-        <h1 className="mt-6 text-balance font-display text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
+        <h1 className="mt-6 text-balance font-display text-4xl leading-[1.06] sm:text-6xl lg:text-7xl">
           {aboutHeroTitle}
         </h1>
-        <p className="mx-auto mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-[#555555]">
+        <p className="mx-auto mt-8 max-w-2xl text-pretty text-base leading-relaxed text-[#555555] sm:text-lg">
           {aboutHeroSubtitle}
         </p>
       </section>
@@ -87,7 +87,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-28 lg:px-10">
+      <section className="mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-10">
         <div className="grid gap-16 lg:grid-cols-12">
           <h2 className="font-display text-4xl leading-tight lg:col-span-5 sm:text-5xl">
             Our values are simple.

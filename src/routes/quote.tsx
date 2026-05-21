@@ -111,9 +111,9 @@ function QuotePage() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-6 py-24 lg:px-10">
+    <section className="mx-auto max-w-5xl px-6 py-20 sm:py-24 lg:px-10">
       <p className="eyebrow">Custom Order</p>
-      <h1 className="mt-5 text-balance font-display text-5xl leading-[1.05] sm:text-6xl">
+      <h1 className="mt-5 text-balance font-display text-4xl leading-[1.06] sm:text-6xl">
         Request a quote.
         <br />
         <span className="italic text-primary">We&apos;ll reply within 48 hours.</span>
@@ -197,7 +197,7 @@ function QuotePage() {
             </p>
             <button
               type="submit"
-              className="rounded-sm bg-primary px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
+              className="w-full rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-accent sm:w-auto sm:px-10 sm:tracking-[0.2em]"
             >
               Send on WhatsApp
             </button>

@@ -44,7 +44,7 @@ function ProductDetailPage() {
     : ["Solid hardwood frame", "Hand-tied springs", "Ethically sourced fill"];
 
   return (
-    <div className="bg-background pb-28 pt-32 md:pb-24">
+    <div className="bg-background pb-28 pt-24 md:pb-24 md:pt-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Link
           to="/collection"
@@ -53,7 +53,7 @@ function ProductDetailPage() {
           <ArrowLeft className="h-3 w-3" /> Back to Collection
         </Link>
 
-        <div className="mt-12 grid gap-16 lg:grid-cols-2 lg:items-start">
+        <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-2 lg:items-start lg:gap-16">
           <div className="aspect-[4/5] overflow-hidden border border-primary/25 bg-card p-3 shadow-[0_16px_45px_rgba(11,27,58,0.06)] lg:sticky lg:top-32">
             <img
               src={getPublicImageUrl(product.image_url)}
@@ -64,22 +64,22 @@ function ProductDetailPage() {
 
           <div className="flex flex-col">
             <p className="eyebrow">{getCollectionLabel(product.category)}</p>
-            <h1 className="mt-4 font-display text-5xl italic sm:text-6xl">{product.name}</h1>
-            <p className="mt-6 text-2xl font-semibold text-primary">{product.price}</p>
+            <h1 className="mt-4 font-display text-4xl italic sm:text-6xl">{product.name}</h1>
+            <p className="mt-5 text-xl font-semibold text-primary sm:text-2xl">{product.price}</p>
 
-            <div className="mt-12 space-y-8 border-t border-border/60 pt-10">
+            <div className="mt-8 space-y-8 border-t border-border/60 pt-8 sm:mt-12 sm:pt-10">
               <section className="space-y-3">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   Overview
                 </h2>
-                <p className="text-lg leading-relaxed text-[#555555]">{product.description}</p>
+                <p className="text-base leading-relaxed text-[#555555] sm:text-lg">{product.description}</p>
               </section>
 
               <section className="rounded-sm border bg-card p-5 shadow-[0_12px_35px_rgba(11,27,58,0.05)]">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   Dimensions
                 </h2>
-                <div className="mt-5 grid grid-cols-3 gap-5">
+                <div className="mt-5 grid gap-4 sm:grid-cols-3 sm:gap-5">
                   <div>
                     <p className="mb-1 text-[10px] uppercase tracking-widest text-muted-foreground">
                       Width
@@ -127,7 +127,7 @@ function ProductDetailPage() {
                 <Link
                   to="/quote"
                   search={{ sofa: product.slug }}
-                  className="mt-5 inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-accent"
+                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-accent sm:w-auto sm:tracking-[0.18em]"
                 >
                   Request a Quote
                   <ArrowUpRight className="h-4 w-4" />
@@ -142,7 +142,7 @@ function ProductDetailPage() {
         <Link
           to="/quote"
           search={{ sofa: product.slug }}
-          className="flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground"
+          className="flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground"
         >
           Request a Quote
           <ArrowUpRight className="h-4 w-4" />

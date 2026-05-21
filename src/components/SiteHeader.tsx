@@ -13,12 +13,12 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-primary/30 bg-secondary text-secondary-foreground shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 lg:px-10">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-10">
         <Link to="/" className="flex h-16 items-center">
           <img
             src="/colne-sofa-logo-navbar-light.png"
             alt="Colne Sofa LTD"
-            className="h-full w-auto max-w-[250px] object-contain md:max-w-[330px]"
+            className="h-full w-auto max-w-[210px] object-contain sm:max-w-[250px] md:max-w-[330px]"
           />
         </Link>
 

@@ -69,16 +69,16 @@ function ContactPage() {
 
   return (
     <>
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+      <section className="mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-10">
         <p className="eyebrow">Contact</p>
-        <h1 className="mt-5 max-w-3xl text-balance font-display text-5xl leading-[1.05] sm:text-6xl">
+        <h1 className="mt-5 max-w-3xl text-balance font-display text-4xl leading-[1.06] sm:text-6xl">
           Come visit, or simply
           <br />
           <span className="italic text-primary">drop us a line.</span>
         </h1>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-16 px-6 pb-28 lg:grid-cols-12 lg:px-10">
+      <section className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 lg:grid-cols-12 lg:gap-16 lg:px-10 lg:pb-28">
         <aside className="space-y-10 lg:col-span-4">
           <div>
             <p className="eyebrow">Showroom</p>
@@ -150,7 +150,7 @@ function ContactPage() {
               </div>
               <button
                 type="submit"
-                className="mt-4 rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
+                className="mt-4 w-full rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-accent sm:w-auto sm:tracking-[0.2em]"
               >
                 Send on WhatsApp
               </button>

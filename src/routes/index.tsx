@@ -68,26 +68,26 @@ function HomePage() {
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/92 via-45% to-background/20" />
 
-        <div className="mx-auto grid min-h-[82vh] max-w-7xl grid-cols-1 items-center px-6 py-24 lg:px-10">
+        <div className="mx-auto grid min-h-[78svh] max-w-7xl grid-cols-1 items-center px-6 py-20 sm:py-24 lg:min-h-[82vh] lg:px-10">
           <div className="max-w-2xl">
             <p className="eyebrow">Atelier · Paris · Est. 1978</p>
-            <h1 className="mt-6 text-balance font-display text-5xl leading-[1.05] text-foreground sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 text-balance font-display text-4xl leading-[1.06] text-foreground sm:text-6xl lg:text-7xl">
               {heroTitle}
             </h1>
             <p className="mt-7 max-w-lg text-pretty text-base leading-relaxed text-[#555555] sm:text-lg">
               {heroSubtitle}
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               <Link
                 to="/collection"
-                className="group inline-flex items-center gap-2 rounded-sm bg-primary px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground shadow-sm transition-all hover:bg-accent"
+                className="group inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground shadow-sm transition-all hover:bg-accent sm:px-7 sm:tracking-[0.2em]"
               >
                 See the Collection
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
                 to="/quote"
-                className="inline-flex items-center gap-2 rounded-sm bg-secondary px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-secondary-foreground transition-colors hover:bg-[#142857]"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-secondary px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.14em] text-secondary-foreground transition-colors hover:bg-[#142857] sm:px-7 sm:tracking-[0.2em]"
               >
                 Request a Custom Quote
               </Link>
@@ -211,7 +211,7 @@ function HomePage() {
               From the first cut of beech to the final hand-stitched seam, every Colne Sofa LTD sofa
               passes through fourteen artisans over an average of 84 hours of work.
             </p>
-            <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8">
+            <dl className="mt-10 grid gap-6 border-t border-border/60 pt-8 sm:grid-cols-3">
               <div>
                 <dt className="text-xs uppercase tracking-widest text-muted-foreground">Founded</dt>
                 <dd className="mt-2 font-display text-3xl">1978</dd>

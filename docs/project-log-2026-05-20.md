@@ -153,6 +153,14 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Made the product list table horizontally scrollable on narrow screens.
 - Updated product add/edit forms to use single-column mobile layouts.
 
+### Public mobile responsiveness
+
+- Tightened the mobile header logo width and spacing for narrow screens.
+- Reduced base mobile heading sizes on Home, About, Contact, Quote, and Product detail pages.
+- Changed mobile CTA groups/buttons to stack cleanly with safer letter spacing.
+- Made product detail dimensions single-column on mobile and 3-column from small screens upward.
+- Reduced mobile top/bottom spacing on heavy hero/form sections.
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset
