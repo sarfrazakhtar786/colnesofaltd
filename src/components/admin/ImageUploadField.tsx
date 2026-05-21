@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
-import { AlertTriangle, Images, ImageUp, Loader2, Trash2 } from "lucide-react";
+import { AlertTriangle, Crop, Images, ImageUp, Loader2, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/lib/supabase";
+import { ImageCropDialog } from "@/components/admin/ImageCropDialog";
 import { ImageUrlPreview } from "@/components/admin/ImageUrlPreview";
 
 type ImageUploadFieldProps = {
@@ -83,6 +84,7 @@ export function ImageUploadField({
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [libraryLoading, setLibraryLoading] = useState(false);
   const [libraryImages, setLibraryImages] = useState<LibraryImage[]>([]);
+  const [pendingCropFile, setPendingCropFile] = useState<File | null>(null);
 
   async function handleUpload(file?: File) {
     if (!file) return;
@@ -92,11 +94,23 @@ export function ImageUploadField({
       return;
     }
 
+    setPendingCropFile(file);
+  }
+
+  function cancelCrop() {
+    setPendingCropFile(null);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }
+
+  async function uploadCroppedImage(blob: Blob, fileName: string) {
     setUploading(true);
-    const filePath = `${folder}/${slugifyFileName(file.name)}`;
-    const { error } = await supabase.storage.from(BUCKET_NAME).upload(filePath, file, {
+    const filePath = `${folder}/${slugifyFileName(fileName)}`;
+    const { error } = await supabase.storage.from(BUCKET_NAME).upload(filePath, blob, {
       cacheControl: "31536000",
       upsert: false,
+      contentType: blob.type || "image/jpeg",
     });
 
     if (error) {
@@ -107,6 +121,10 @@ export function ImageUploadField({
 
     const { data } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
     onChange(data.publicUrl);
+    setPendingCropFile(null);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
     if (libraryOpen) {
       await fetchLibrary();
     }
@@ -217,8 +235,30 @@ export function ImageUploadField({
     await fetchLibrary();
   }
 
+  async function cropLibraryImage(image: LibraryImage) {
+    try {
+      const response = await fetch(image.publicUrl);
+      if (!response.ok) {
+        throw new Error("Image could not be loaded for cropping.");
+      }
+
+      const blob = await response.blob();
+      const file = new File([blob], image.name, { type: blob.type || "image/jpeg" });
+      setPendingCropFile(file);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Image could not be loaded for cropping.");
+    }
+  }
+
   return (
     <div className="grid gap-2">
+      <ImageCropDialog
+        file={pendingCropFile}
+        aspect={aspect}
+        label={label}
+        onCancel={cancelCrop}
+        onCrop={uploadCroppedImage}
+      />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="space-y-1">
           <Label htmlFor={id}>{label}</Label>
@@ -311,14 +351,24 @@ export function ImageUploadField({
                         </Badge>
                       )}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="grid grid-cols-[1fr_1fr_32px] gap-2">
                       <Button
                         type="button"
                         size="sm"
-                        className="h-8 flex-1"
+                        className="h-8"
                         onClick={() => onChange(image.publicUrl)}
                       >
                         Use
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="h-8"
+                        onClick={() => cropLibraryImage(image)}
+                      >
+                        <Crop className="mr-1 h-3.5 w-3.5" />
+                        Crop
                       </Button>
                       <Button
                         type="button"

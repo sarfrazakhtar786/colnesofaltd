@@ -65,12 +65,16 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added a guarded delete action for unused Storage images.
 - Improved Media Library cleanup with site-wide usage checks before delete.
 - Used images are now marked in the library and delete is disabled until the image is removed from products/content first.
+- Added an upload cropper so admins can drag/zoom images before the cropped version is uploaded.
+- Crop outputs are saved to Supabase Storage instead of the oversized original upload.
+- Added a Media Library crop action so an existing image can be cropped into a new optimized upload.
 - Upload fields were added for:
   - Home hero image: `site-images/hero/`
   - About page image: `site-images/about/`
   - Product images: `site-images/products/`
 - Files updated:
   - `src/components/admin/ImageUploadField.tsx`
+  - `src/components/admin/ImageCropDialog.tsx`
   - `src/routes/admin/content.index.tsx`
   - `src/routes/admin/products.new.tsx`
   - `src/routes/admin/products.$id.tsx`
