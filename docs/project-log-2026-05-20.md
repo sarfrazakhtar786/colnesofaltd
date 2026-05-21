@@ -165,6 +165,7 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added missing-field filters for image, price, description, dimensions, and materials.
 - Added collection/status count summaries.
 - Added multi-select product rows with bulk collection move and bulk delete actions.
+- Replaced product add/edit browser validation popups and save alerts with inline field validation and page-level error messages.
 
 ### Public mobile responsiveness
 
