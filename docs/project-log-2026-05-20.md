@@ -145,6 +145,14 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added a database-level guard to prevent deleting the final admin:
   - `docs/supabase-last-admin-guard.sql`
 
+### Admin mobile layout
+
+- Added a mobile admin navigation drawer with the existing admin links.
+- Made the admin header sticky and responsive on smaller screens.
+- Reduced mobile content padding and improved product/content page header wrapping.
+- Made the product list table horizontally scrollable on narrow screens.
+- Updated product add/edit forms to use single-column mobile layouts.
+
 ## Commits Pushed Today
 
 - `341c8911` - add navbar logo asset

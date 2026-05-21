@@ -105,7 +105,7 @@ function AdminContent() {
 
   return (
     <div className="space-y-6 max-w-4xl pb-20">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl font-display">Manage Site Content</h1>
         <Button onClick={handleSave} disabled={saving}>
           {saving ? (

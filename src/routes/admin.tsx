@@ -7,12 +7,21 @@ import {
   LayoutDashboard,
   Loader2,
   LogOut,
+  Menu,
   ShieldAlert,
   ShoppingBag,
   Users,
 } from "lucide-react";
 import { isCurrentUserAdmin } from "@/lib/admin-auth";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
@@ -25,6 +34,7 @@ function AdminLayout() {
   const [email, setEmail] = useState("Admin");
   const [checkingSession, setCheckingSession] = useState(true);
   const [hasAdminAccess, setHasAdminAccess] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -70,6 +80,79 @@ function AdminLayout() {
     navigate({ to: "/admin-login" });
   }
 
+  function AdminBrand() {
+    return (
+      <Link to="/" className="font-display text-xl tracking-tight">
+        Sofa Studio <span className="text-primary text-xs uppercase">Admin</span>
+      </Link>
+    );
+  }
+
+  function AdminNavigation({ onNavigate }: { onNavigate?: () => void }) {
+    const linkClass =
+      "flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors";
+    const activeClass = "bg-muted font-medium text-primary";
+
+    return (
+      <nav className="space-y-2">
+        <Link
+          to="/admin"
+          className={linkClass}
+          activeProps={{ className: activeClass }}
+          onClick={onNavigate}
+        >
+          <LayoutDashboard className="h-4 w-4" />
+          Dashboard
+        </Link>
+        <Link
+          to="/admin/products"
+          className={linkClass}
+          activeProps={{ className: activeClass }}
+          onClick={onNavigate}
+        >
+          <ShoppingBag className="h-4 w-4" />
+          Products
+        </Link>
+        <Link
+          to="/admin/content"
+          className={linkClass}
+          activeProps={{ className: activeClass }}
+          onClick={onNavigate}
+        >
+          <Home className="h-4 w-4" />
+          Page Content
+        </Link>
+        <Link
+          to="/admin/submissions"
+          className={linkClass}
+          activeProps={{ className: activeClass }}
+          onClick={onNavigate}
+        >
+          <Inbox className="h-4 w-4" />
+          Requests
+        </Link>
+        <Link
+          to="/admin/users"
+          className={linkClass}
+          activeProps={{ className: activeClass }}
+          onClick={onNavigate}
+        >
+          <Users className="h-4 w-4" />
+          Admin Users
+        </Link>
+        <div className="pt-4 mt-4 border-t">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors text-destructive w-full text-left"
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </button>
+        </div>
+      </nav>
+    );
+  }
+
   if (checkingSession) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background">
@@ -105,72 +188,44 @@ function AdminLayout() {
       {/* Sidebar */}
       <aside className="w-64 border-r bg-background hidden md:block">
         <div className="flex h-16 items-center px-6 border-b">
-          <Link to="/" className="font-display text-xl tracking-tight">
-            Sofa Studio <span className="text-primary text-xs uppercase">Admin</span>
-          </Link>
+          <AdminBrand />
         </div>
-        <nav className="p-4 space-y-2">
-          <Link
-            to="/admin"
-            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: "bg-muted font-medium text-primary" }}
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            Dashboard
-          </Link>
-          <Link
-            to="/admin/products"
-            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: "bg-muted font-medium text-primary" }}
-          >
-            <ShoppingBag className="h-4 w-4" />
-            Products
-          </Link>
-          <Link
-            to="/admin/content"
-            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: "bg-muted font-medium text-primary" }}
-          >
-            <Home className="h-4 w-4" />
-            Page Content
-          </Link>
-          <Link
-            to="/admin/submissions"
-            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: "bg-muted font-medium text-primary" }}
-          >
-            <Inbox className="h-4 w-4" />
-            Requests
-          </Link>
-          <Link
-            to="/admin/users"
-            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            activeProps={{ className: "bg-muted font-medium text-primary" }}
-          >
-            <Users className="h-4 w-4" />
-            Admin Users
-          </Link>
-          <div className="pt-4 mt-4 border-t">
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors text-destructive w-full text-left"
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </button>
-          </div>
-        </nav>
+        <div className="p-4">
+          <AdminNavigation />
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <header className="h-16 border-b bg-background flex items-center px-8 justify-between">
-          <h2 className="font-semibold text-lg">Admin Control Panel</h2>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground italic">Logged in as {email}</span>
+      <main className="min-w-0 flex-1 overflow-auto">
+        <header className="sticky top-0 z-30 min-h-16 border-b bg-background/95 px-4 py-3 backdrop-blur md:px-8">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+                <SheetTrigger asChild>
+                  <Button type="button" variant="outline" size="icon" className="md:hidden" aria-label="Open admin menu">
+                    <Menu className="h-4 w-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-72 p-0">
+                  <SheetHeader className="border-b px-6 py-5 text-left">
+                    <SheetTitle>
+                      <AdminBrand />
+                    </SheetTitle>
+                    <SheetDescription>Admin navigation</SheetDescription>
+                  </SheetHeader>
+                  <div className="p-4">
+                    <AdminNavigation onNavigate={() => setMobileNavOpen(false)} />
+                  </div>
+                </SheetContent>
+              </Sheet>
+              <h2 className="truncate font-semibold text-base md:text-lg">Admin Control Panel</h2>
+            </div>
+            <span className="max-w-[48vw] truncate text-xs text-muted-foreground italic sm:text-sm">
+              Logged in as {email}
+            </span>
           </div>
         </header>
-        <div className="p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           <Outlet />
         </div>
       </main>

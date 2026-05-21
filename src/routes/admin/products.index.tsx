@@ -91,11 +91,11 @@ function AdminProducts() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl font-display">Manage Products</h1>
         <Link
           to="/admin/products/new"
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
         >
           <Plus className="h-4 w-4" /> Add Product
         </Link>
@@ -148,8 +148,8 @@ function AdminProducts() {
             </CardContent>
           </Card>
         ) : (
-          <div className="border rounded-md overflow-hidden bg-background">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto rounded-md border bg-background">
+            <table className="min-w-[840px] w-full text-sm">
               <thead className="bg-muted">
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Image</th>

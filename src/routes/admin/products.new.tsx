@@ -69,13 +69,13 @@ function AddProduct() {
         <Button variant="ghost" size="icon" onClick={() => window.history.back()}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h1 className="text-3xl font-display">Add New Product</h1>
+        <h1 className="text-2xl font-display sm:text-3xl">Add New Product</h1>
       </div>
 
       <Card>
         <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="name">Product Name</Label>
                 <Input
@@ -149,7 +149,7 @@ function AddProduct() {
 
             <div className="border-t pt-4">
               <h3 className="font-medium mb-4">Dimensions</h3>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid gap-4 sm:grid-cols-3">
                 <div className="grid gap-2">
                   <Label htmlFor="width">Width</Label>
                   <Input
