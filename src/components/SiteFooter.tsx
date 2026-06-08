@@ -72,7 +72,7 @@ export function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 text-xs text-white/55 md:flex-row lg:px-10">
           <p>&copy; {new Date().getFullYear()} Colne Sofa LTD. All rights reserved.</p>
-          <p>Based in the UK &middot; Shipped worldwide</p>
+          <p>Based in the UK</p>
         </div>
       </div>
     </footer>
