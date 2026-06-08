@@ -77,16 +77,25 @@ function HomePage() {
     <>
       {/* HERO BANNER */}
       <section className="relative isolate overflow-hidden bg-background">
+        <div className="lg:hidden">
+          <img
+            src={getPublicImageUrl(heroImage)}
+            alt="The Luna Curve sofa"
+            width={1200}
+            height={850}
+            className="h-[42svh] min-h-[280px] max-h-[430px] w-full object-cover object-center"
+          />
+        </div>
         <img
           src={getPublicImageUrl(heroImage)}
           alt="The Luna Curve sofa"
           width={1920}
           height={1280}
-          className="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover opacity-90 lg:w-[62%]"
+          className="absolute inset-y-0 right-0 -z-10 hidden h-full w-[62%] object-cover object-center opacity-90 lg:block"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/92 via-45% to-background/20" />
+        <div className="absolute inset-0 -z-10 hidden bg-gradient-to-r from-background via-background/92 via-45% to-background/20 lg:block" />
 
-        <div className="mx-auto grid min-h-[78svh] max-w-7xl grid-cols-1 items-center px-6 py-20 sm:py-24 lg:min-h-[82vh] lg:px-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center px-6 py-12 sm:py-16 lg:min-h-[82vh] lg:px-10 lg:py-24">
           <div className="max-w-2xl">
             <p className="eyebrow">Colne Sofa LTD</p>
             <h1 className="mt-6 text-balance font-display text-4xl leading-[1.06] text-foreground sm:text-6xl lg:text-7xl">
