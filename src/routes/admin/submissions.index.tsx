@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
 import { type RequestStatus, requestStatuses } from "@/lib/submissions";
 
-type SubmissionType = "quote" | "contact";
+type SubmissionType = "quote" | "contact" | "repair";
 
 type AdminSubmission = {
   id: string;
@@ -35,9 +35,10 @@ function AdminSubmissions() {
 
   async function fetchSubmissions() {
     setLoading(true);
-    const [quoteRes, contactRes] = await Promise.all([
+    const [quoteRes, contactRes, repairRes] = await Promise.all([
       supabase.from("quote_requests").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }),
+      supabase.from("repair_requests").select("*").order("created_at", { ascending: false }),
     ]);
 
     const quoteRows =
@@ -66,8 +67,30 @@ function AdminSubmissions() {
         detail: row.message || "",
       })) || [];
 
+    const repairRows =
+      repairRes.data?.map((row) => ({
+        id: row.id,
+        type: "repair" as const,
+        created_at: row.created_at,
+        status: row.status || "New",
+        name: `${row.first_name || ""} ${row.last_name || ""}`.trim(),
+        email: row.email || "",
+        phone: row.phone || "",
+        subject: row.issue_type || "Repair request",
+        detail: [
+          row.product_type && `Product: ${row.product_type}`,
+          row.address && `Address / postcode: ${row.address}`,
+          row.preferred_timeline && `Timeline: ${row.preferred_timeline}`,
+          row.photo_url && `Photo URL: ${row.photo_url}`,
+          row.details && "",
+          row.details,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      })) || [];
+
     setSubmissions(
-      [...quoteRows, ...contactRows].sort(
+      [...quoteRows, ...contactRows, ...repairRows].sort(
         (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
       ),
     );
@@ -75,7 +98,12 @@ function AdminSubmissions() {
   }
 
   async function updateStatus(submission: AdminSubmission, status: RequestStatus) {
-    const table = submission.type === "quote" ? "quote_requests" : "contact_submissions";
+    const table =
+      submission.type === "quote"
+        ? "quote_requests"
+        : submission.type === "repair"
+          ? "repair_requests"
+          : "contact_submissions";
     const { error } = await supabase.from(table).update({ status }).eq("id", submission.id);
 
     if (error) {
@@ -97,7 +125,7 @@ function AdminSubmissions() {
         <div>
           <h1 className="text-3xl font-display">Requests Inbox</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Contact messages and quote requests saved from the website forms.
+            Contact messages, quote requests, and repair requests saved from the website forms.
           </p>
         </div>
         <select
@@ -107,6 +135,7 @@ function AdminSubmissions() {
         >
           <option value="all">All requests</option>
           <option value="quote">Quote requests</option>
+          <option value="repair">Repair requests</option>
           <option value="contact">Contact messages</option>
         </select>
       </div>
@@ -129,8 +158,20 @@ function AdminSubmissions() {
               <CardContent className="grid gap-4 p-5 lg:grid-cols-[1fr_180px]">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant={submission.type === "quote" ? "default" : "secondary"}>
-                      {submission.type === "quote" ? "Quote" : "Contact"}
+                    <Badge
+                      variant={
+                        submission.type === "quote"
+                          ? "default"
+                          : submission.type === "repair"
+                            ? "outline"
+                            : "secondary"
+                      }
+                    >
+                      {submission.type === "quote"
+                        ? "Quote"
+                        : submission.type === "repair"
+                          ? "Repair"
+                          : "Contact"}
                     </Badge>
                     <Badge variant="outline">{submission.status}</Badge>
                     <span className="text-xs text-muted-foreground">

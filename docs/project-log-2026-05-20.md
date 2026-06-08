@@ -128,6 +128,10 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added request status tracking in admin: `New`, `Contacted`, `Quoted`, `Closed`.
 - Added SQL setup file:
   - `docs/supabase-submissions-schema.sql`
+- Added a dedicated `/repair-request` form that validates required fields, opens a formatted WhatsApp repair message, and saves to `repair_requests` when the Supabase table exists.
+- Updated the admin Requests inbox with a Repair filter and status support.
+- Added SQL setup file:
+  - `docs/supabase-repair-requests-schema.sql`
 
 ### Frontend product improvements
 
@@ -137,6 +141,7 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Product detail quote buttons now preselect the current product on `/quote`.
 - Added homepage trust points below the hero for UK-made quality, custom sizes, and premium materials.
 - Updated the footer to use the real Colne Sofa LTD logo image instead of a text-only wordmark.
+- Changed the homepage hero secondary CTA from `Request a Custom Quote` to `Repair Request` and linked it to `/repair-request`.
 
 ### Admin security
 

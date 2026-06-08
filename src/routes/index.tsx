@@ -104,10 +104,10 @@ function HomePage() {
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
-                to="/quote"
+                to="/repair-request"
                 className="inline-flex items-center justify-center gap-2 rounded-sm bg-secondary px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.14em] text-secondary-foreground transition-colors hover:bg-[#142857] sm:px-7 sm:tracking-[0.2em]"
               >
-                Request a Custom Quote
+                Repair Request
               </Link>
             </div>
           </div>

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RepairRequestRouteImport } from './routes/repair-request'
 import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminLoginRouteImport } from './routes/admin-login'
@@ -25,6 +26,11 @@ import { Route as AdminContentIndexRouteImport } from './routes/admin/content.in
 import { Route as AdminProductsNewRouteImport } from './routes/admin/products.new'
 import { Route as AdminProductsIdRouteImport } from './routes/admin/products.$id'
 
+const RepairRequestRoute = RepairRequestRouteImport.update({
+  id: '/repair-request',
+  path: '/repair-request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuoteRoute = QuoteRouteImport.update({
   id: '/quote',
   path: '/quote',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/admin-login': typeof AdminLoginRoute
   '/contact': typeof ContactRoute
   '/quote': typeof QuoteRoute
+  '/repair-request': typeof RepairRequestRoute
   '/collection/$slug': typeof CollectionSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/collection/': typeof CollectionIndexRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/admin-login': typeof AdminLoginRoute
   '/contact': typeof ContactRoute
   '/quote': typeof QuoteRoute
+  '/repair-request': typeof RepairRequestRoute
   '/collection/$slug': typeof CollectionSlugRoute
   '/admin': typeof AdminIndexRoute
   '/collection': typeof CollectionIndexRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/admin-login': typeof AdminLoginRoute
   '/contact': typeof ContactRoute
   '/quote': typeof QuoteRoute
+  '/repair-request': typeof RepairRequestRoute
   '/collection/$slug': typeof CollectionSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/collection/': typeof CollectionIndexRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/admin-login'
     | '/contact'
     | '/quote'
+    | '/repair-request'
     | '/collection/$slug'
     | '/admin/'
     | '/collection/'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/admin-login'
     | '/contact'
     | '/quote'
+    | '/repair-request'
     | '/collection/$slug'
     | '/admin'
     | '/collection'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/admin-login'
     | '/contact'
     | '/quote'
+    | '/repair-request'
     | '/collection/$slug'
     | '/admin/'
     | '/collection/'
@@ -212,12 +224,20 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   ContactRoute: typeof ContactRoute
   QuoteRoute: typeof QuoteRoute
+  RepairRequestRoute: typeof RepairRequestRoute
   CollectionSlugRoute: typeof CollectionSlugRoute
   CollectionIndexRoute: typeof CollectionIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/repair-request': {
+      id: '/repair-request'
+      path: '/repair-request'
+      fullPath: '/repair-request'
+      preLoaderRoute: typeof RepairRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quote': {
       id: '/quote'
       path: '/quote'
@@ -355,6 +375,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   ContactRoute: ContactRoute,
   QuoteRoute: QuoteRoute,
+  RepairRequestRoute: RepairRequestRoute,
   CollectionSlugRoute: CollectionSlugRoute,
   CollectionIndexRoute: CollectionIndexRoute,
 }
