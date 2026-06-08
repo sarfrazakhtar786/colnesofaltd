@@ -1,7 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { ImageUp, Loader2 } from "lucide-react";
 import { contactDetails, fetchContactDetails } from "@/lib/contact";
 import { saveRepairRequest } from "@/lib/submissions";
+import { supabase } from "@/lib/supabase";
+
+const BUCKET_NAME = "site-images";
 
 const repairIssues = [
   "Fabric tear",
@@ -32,6 +36,9 @@ export const Route = createFileRoute("/repair-request")({
 function RepairRequestPage() {
   const [details, setDetails] = useState(contactDetails);
   const [sent, setSent] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoUploading, setPhotoUploading] = useState(false);
+  const [photoError, setPhotoError] = useState("");
 
   useEffect(() => {
     fetchContactDetails().then(setDetails);
@@ -41,6 +48,10 @@ function RepairRequestPage() {
     e.preventDefault();
     if (!e.currentTarget.checkValidity()) {
       e.currentTarget.reportValidity();
+      return;
+    }
+    if (photoUploading) {
+      setPhotoError("Please wait until the photo upload is complete.");
       return;
     }
 
@@ -54,7 +65,7 @@ function RepairRequestPage() {
       product_type: String(form.get("productType") || ""),
       issue_type: String(form.get("issueType") || ""),
       preferred_timeline: String(form.get("timeline") || ""),
-      photo_url: String(form.get("photoUrl") || ""),
+      photo_url: photoUrl,
       details: String(form.get("details") || ""),
     };
 
@@ -68,7 +79,7 @@ function RepairRequestPage() {
       `Sofa / product type: ${submission.product_type}`,
       `Repair issue: ${submission.issue_type}`,
       `Preferred timeline: ${submission.preferred_timeline || "Not specified"}`,
-      `Photo URL: ${submission.photo_url || "Not provided"}`,
+      `Repair photo: ${submission.photo_url || "Not uploaded"}`,
       "",
       "Repair details:",
       submission.details,
@@ -82,6 +93,40 @@ function RepairRequestPage() {
     const whatsappUrl = `https://wa.me/${details.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setSent(true);
+  }
+
+  async function uploadRepairPhoto(file?: File) {
+    setPhotoError("");
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("Please choose an image file.");
+      return;
+    }
+
+    const maxBytes = 8 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setPhotoError("Image is too large. Please upload an image under 8 MB.");
+      return;
+    }
+
+    setPhotoUploading(true);
+    const filePath = `repairs/${slugifyFileName(file.name)}`;
+    const { error } = await supabase.storage.from(BUCKET_NAME).upload(filePath, file, {
+      cacheControl: "31536000",
+      upsert: false,
+      contentType: file.type,
+    });
+
+    if (error) {
+      setPhotoError("Photo upload failed: " + error.message);
+      setPhotoUploading(false);
+      return;
+    }
+
+    const { data } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
+    setPhotoUrl(data.publicUrl);
+    setPhotoUploading(false);
   }
 
   return (
@@ -156,11 +201,11 @@ function RepairRequestPage() {
               name="timeline"
               placeholder="e.g. this week, after 6pm, weekend"
             />
-            <Field
-              label="Photo URL"
-              name="photoUrl"
-              type="url"
-              placeholder="Optional link to repair photos"
+            <RepairPhotoUpload
+              photoUrl={photoUrl}
+              uploading={photoUploading}
+              error={photoError}
+              onUpload={uploadRepairPhoto}
             />
           </div>
 
@@ -180,18 +225,76 @@ function RepairRequestPage() {
 
           <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-8">
             <p className="text-xs text-muted-foreground">
-              Required fields must be filled before WhatsApp opens.
+              Required fields must be filled before WhatsApp opens. Uploading a repair photo is optional.
             </p>
             <button
               type="submit"
+              disabled={photoUploading}
               className="w-full rounded-sm bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-accent sm:w-auto sm:px-10 sm:tracking-[0.2em]"
             >
-              Send Repair Request
+              {photoUploading ? "Uploading Photo..." : "Send Repair Request"}
             </button>
           </div>
         </form>
       )}
     </section>
+  );
+}
+
+function RepairPhotoUpload({
+  photoUrl,
+  uploading,
+  error,
+  onUpload,
+}: {
+  photoUrl: string;
+  uploading: boolean;
+  error: string;
+  onUpload: (file?: File) => void;
+}) {
+  return (
+    <div>
+      <label htmlFor="repairPhoto" className="text-xs uppercase tracking-widest text-muted-foreground">
+        Product repair photo
+      </label>
+      <label
+        htmlFor="repairPhoto"
+        className="mt-2 flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-sm border border-dashed border-primary/35 bg-white px-4 py-5 text-center shadow-sm transition-colors hover:border-primary hover:bg-primary/5"
+      >
+        {uploading ? (
+          <>
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            <span className="mt-3 text-sm font-medium text-secondary">Uploading photo...</span>
+          </>
+        ) : photoUrl ? (
+          <img
+            src={photoUrl}
+            alt="Repair product preview"
+            className="max-h-40 w-full rounded-sm object-cover"
+          />
+        ) : (
+          <>
+            <ImageUp className="h-7 w-7 text-primary" />
+            <span className="mt-3 text-sm font-medium text-secondary">Upload product photo</span>
+            <span className="mt-1 text-xs text-muted-foreground">JPG, PNG, or WebP under 8 MB</span>
+          </>
+        )}
+      </label>
+      <input
+        id="repairPhoto"
+        type="file"
+        accept="image/*"
+        className="sr-only"
+        disabled={uploading}
+        onChange={(event) => onUpload(event.target.files?.[0])}
+      />
+      {photoUrl && (
+        <p className="mt-2 break-all text-xs text-muted-foreground">
+          Uploaded and attached to this request.
+        </p>
+      )}
+      {error && <p className="mt-2 text-xs font-medium text-destructive">{error}</p>}
+    </div>
   );
 }
 
@@ -224,4 +327,16 @@ function Field({
       />
     </div>
   );
+}
+
+function slugifyFileName(name: string) {
+  const extension = name.split(".").pop()?.toLowerCase() || "jpg";
+  const baseName = name
+    .replace(/\.[^/.]+$/, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `${baseName || "repair-photo"}-${Date.now()}.${extension}`;
 }

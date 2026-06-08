@@ -87,3 +87,13 @@ for all
 to authenticated
 using (true)
 with check (true);
+
+drop policy if exists "Anyone can upload repair photos" on storage.objects;
+create policy "Anyone can upload repair photos"
+on storage.objects
+for insert
+to anon, authenticated
+with check (
+  bucket_id = 'site-images'
+  and (storage.foldername(name))[1] = 'repairs'
+);

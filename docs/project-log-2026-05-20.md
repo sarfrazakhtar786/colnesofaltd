@@ -129,6 +129,7 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added SQL setup file:
   - `docs/supabase-submissions-schema.sql`
 - Added a dedicated `/repair-request` form that validates required fields, opens a formatted WhatsApp repair message, and saves to `repair_requests` when the Supabase table exists.
+- Replaced the repair form photo URL field with a direct image upload to Supabase Storage folder `site-images/repairs/`, including upload preview and WhatsApp/admin attachment URL.
 - Updated the admin Requests inbox with a Repair filter and status support.
 - Added SQL setup file:
   - `docs/supabase-repair-requests-schema.sql`
