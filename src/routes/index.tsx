@@ -88,7 +88,7 @@ function HomePage() {
 
         <div className="mx-auto grid min-h-[78svh] max-w-7xl grid-cols-1 items-center px-6 py-20 sm:py-24 lg:min-h-[82vh] lg:px-10">
           <div className="max-w-2xl">
-            <p className="eyebrow">Atelier · Paris · Est. 1978</p>
+            <p className="eyebrow">Colne Sofa LTD</p>
             <h1 className="mt-6 text-balance font-display text-4xl leading-[1.06] text-foreground sm:text-6xl lg:text-7xl">
               {heroTitle}
             </h1>
