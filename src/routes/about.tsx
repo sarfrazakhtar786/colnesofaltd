@@ -10,7 +10,7 @@ export const Route = createFileRoute("/about")({
       { title: "About Us — Colne Sofa LTD" },
       {
         name: "description",
-        content: "Inside the Parisian atelier where every Colne Sofa LTD sofa is made by hand.",
+        content: "Inside the UK furniture workshop behind Colne Sofa LTD.",
       },
     ],
   }),
@@ -42,10 +42,11 @@ function AboutPage() {
       </div>
     );
 
-  const aboutHeroTitle = content?.about_hero_title || "A small atelier on Rue de l'Artisan.";
+  const aboutHeroTitle =
+    content?.about_hero_title || "Built in Britain, made for homes that are lived in.";
   const aboutHeroSubtitle =
     content?.about_hero_subtitle ||
-    "Colne Sofa LTD was founded by Élise Marchand in a single workshop in the 11th arrondissement of Paris. Today, fourteen artisans still make every sofa by hand, in the same room where it all started.";
+    "Colne Sofa LTD is a UK-based furniture workshop specialising in made-to-order sofas, beds, and repair work. From our Colne base, we combine careful upholstery, durable materials, and practical service for homes across the UK.";
   const aboutImage = content?.about_image || craftsmanDefault;
   const values = content?.values || [
     {
@@ -78,7 +79,7 @@ function AboutPage() {
         <div className="aspect-[16/10] overflow-hidden">
           <img
             src={aboutImage}
-            alt="Inside the Colne Sofa LTD atelier"
+            alt="Inside the Colne Sofa LTD workshop"
             width={1280}
             height={1024}
             loading="lazy"

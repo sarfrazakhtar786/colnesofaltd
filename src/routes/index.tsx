@@ -32,10 +32,10 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Bespoke sofas hand-built in our Parisian atelier. Explore the collection or request a custom quote.",
+          "UK-made sofas, beds, and repair services from Colne Sofa LTD. Explore the collection or request support.",
       },
       { property: "og:title", content: "Colne Sofa LTD" },
-      { property: "og:description", content: "Bespoke sofas hand-built in Paris." },
+      { property: "og:description", content: "UK sofa specialists for custom furniture and repairs." },
     ],
   }),
   component: HomePage,
@@ -70,7 +70,7 @@ function HomePage() {
   const heroTitle = content?.hero_title || "Sofas built the slow way, to be lived in for decades.";
   const heroSubtitle =
     content?.hero_subtitle ||
-    "Each piece is hand-cut, hand-stitched and made to your dimensions in our Parisian workshop. No warehouses. No shortcuts.";
+    "Each piece is made with care, practical comfort, and dimensions tailored for your home. Custom sofas, beds, and repair support across the UK.";
   const heroImage = content?.hero_image || heroSofaDefault;
 
   return (
@@ -153,10 +153,9 @@ function HomePage() {
           </div>
           <div className="space-y-6 text-pretty text-base leading-relaxed text-[#555555] lg:col-span-6 lg:col-start-7">
             <p>
-              Colne Sofa LTD was founded in 1978 by Élise Marchand, a Parisian upholsterer who
-              refused to compromise on materials or time. Forty-six years later, our team of
-              fourteen artisans still works the same way — by hand, in the same workshop on Rue de
-              l&apos;Artisan.
+              Colne Sofa LTD is a UK-based furniture specialist focused on made-to-order sofas,
+              beds, and repair services. Our work is built around practical comfort, reliable
+              materials, and careful finishing for real homes.
             </p>
             <p>
               {content?.about_text ||
@@ -239,7 +238,7 @@ function HomePage() {
           <div className="aspect-[4/5] overflow-hidden">
             <img
               src={craftsman}
-              alt="A craftsman hand-stitching a sofa cushion in our atelier"
+              alt="A craftsman hand-stitching a sofa cushion in the workshop"
               width={1280}
               height={1024}
               loading="lazy"

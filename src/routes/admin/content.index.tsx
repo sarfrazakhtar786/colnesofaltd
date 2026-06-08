@@ -26,15 +26,15 @@ import {
 const defaultContent = {
   hero_title: "Sofas built the slow way, to be lived in for decades.",
   hero_subtitle:
-    "Each piece is hand-cut, hand-stitched and made to your dimensions in our Parisian workshop.",
+    "Each piece is made with care, practical comfort, and dimensions tailored for your home.",
   hero_image: "",
   about_text: "",
   collection_title: "Six silhouettes, infinite combinations.",
   collection_description:
     "Every model is available in over 80 fabrics and leathers, with custom dimensions on request. Pieces ship in 8-16 weeks.",
-  about_hero_title: "A small atelier on Rue de l'Artisan.",
+  about_hero_title: "Built in Britain, made for homes that are lived in.",
   about_hero_subtitle:
-    "Colne Sofa LTD was founded by Elise Marchand in a single workshop in the 11th arrondissement of Paris. Today, fourteen artisans still make every sofa by hand, in the same room where it all started.",
+    "Colne Sofa LTD is a UK-based furniture workshop specialising in made-to-order sofas, beds, and repair work. From our Colne base, we combine careful upholstery, durable materials, and practical service for homes across the UK.",
   about_image: "",
   values: [
     {
