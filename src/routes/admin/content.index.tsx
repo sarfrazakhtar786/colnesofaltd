@@ -335,6 +335,76 @@ function AdminContent() {
                 </div>
               </div>
               <div className="grid gap-2">
+                <Label>Footer Paragraph</Label>
+                <Textarea
+                  value={contact.footerText}
+                  onChange={(e) => updateContact("footerText", e.target.value)}
+                  rows={3}
+                  placeholder="Short brand message shown under the footer logo."
+                />
+                <p className="text-xs text-muted-foreground">
+                  This paragraph appears under the footer logo on every public page.
+                </p>
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <Label>Facebook URL</Label>
+                  <Input
+                    type="url"
+                    value={contact.socialLinks.facebook}
+                    onChange={(e) =>
+                      updateContact("socialLinks", {
+                        ...contact.socialLinks,
+                        facebook: e.target.value,
+                      })
+                    }
+                    placeholder="https://facebook.com/..."
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Instagram URL</Label>
+                  <Input
+                    type="url"
+                    value={contact.socialLinks.instagram}
+                    onChange={(e) =>
+                      updateContact("socialLinks", {
+                        ...contact.socialLinks,
+                        instagram: e.target.value,
+                      })
+                    }
+                    placeholder="https://instagram.com/..."
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label>LinkedIn URL</Label>
+                  <Input
+                    type="url"
+                    value={contact.socialLinks.linkedin}
+                    onChange={(e) =>
+                      updateContact("socialLinks", {
+                        ...contact.socialLinks,
+                        linkedin: e.target.value,
+                      })
+                    }
+                    placeholder="https://linkedin.com/company/..."
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label>YouTube URL</Label>
+                  <Input
+                    type="url"
+                    value={contact.socialLinks.youtube}
+                    onChange={(e) =>
+                      updateContact("socialLinks", {
+                        ...contact.socialLinks,
+                        youtube: e.target.value,
+                      })
+                    }
+                    placeholder="https://youtube.com/..."
+                  />
+                </div>
+              </div>
+              <div className="grid gap-2">
                 <Label>Address Lines</Label>
                 <Textarea
                   value={contact.addressLines.join("\n")}
@@ -447,6 +517,27 @@ function ContentPreviewDialog({
                   {contact.phoneDisplay}
                 </p>
                 <p className="text-muted-foreground">{contact.hours}</p>
+                <div className="border-t pt-3">
+                  <p className="font-medium text-secondary">Footer paragraph</p>
+                  <p className="mt-1 leading-relaxed">{contact.footerText}</p>
+                </div>
+                {Object.values(contact.socialLinks).some(Boolean) && (
+                  <div className="border-t pt-3">
+                    <p className="font-medium text-secondary">Social links</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {Object.entries(contact.socialLinks).map(([platform, url]) =>
+                        url ? (
+                          <span
+                            key={platform}
+                            className="rounded-sm border border-primary/25 px-2 py-1 text-xs uppercase tracking-widest text-primary"
+                          >
+                            {platform}
+                          </span>
+                        ) : null,
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
           </div>

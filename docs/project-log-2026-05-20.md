@@ -114,6 +114,7 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Contact details now save to `site_settings.contact_details`.
 - The contact page, quote page WhatsApp target, and footer now load contact details from Supabase with safe defaults.
 - Updated default About page and homepage fallback copy from the old Paris atelier story to UK-based Colne Sofa LTD workshop/service messaging.
+- Added admin-editable footer paragraph text and social link fields for Facebook, Instagram, LinkedIn, and YouTube.
 
 ### Content preview before publish
 

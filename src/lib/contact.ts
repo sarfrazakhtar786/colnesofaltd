@@ -4,6 +4,13 @@ export type ContactDetails = {
   phoneDisplay: string;
   whatsappNumber: string;
   hours: string;
+  footerText: string;
+  socialLinks: {
+    facebook: string;
+    instagram: string;
+    linkedin: string;
+    youtube: string;
+  };
 };
 
 export const defaultContactDetails: ContactDetails = {
@@ -12,6 +19,14 @@ export const defaultContactDetails: ContactDetails = {
   phoneDisplay: "07417 556531",
   whatsappNumber: "447417556531",
   hours: "Mon-Sat 10:00 - 18:00",
+  footerText:
+    "Hand-crafted sofas, beds, and repair services made with practical comfort, durable materials, and a quiet sense of luxury.",
+  socialLinks: {
+    facebook: "",
+    instagram: "",
+    linkedin: "",
+    youtube: "",
+  },
 };
 
 export const contactDetails = {
@@ -30,6 +45,10 @@ export function normalizeContactDetails(value: Partial<ContactDetails> | null | 
   return {
     ...defaultContactDetails,
     ...value,
+    socialLinks: {
+      ...defaultContactDetails.socialLinks,
+      ...(value?.socialLinks || {}),
+    },
     addressLines:
       Array.isArray(value?.addressLines) && value.addressLines.length > 0
         ? value.addressLines

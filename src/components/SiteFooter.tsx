@@ -1,6 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import { contactDetails, fetchContactDetails, getPhoneHref } from "@/lib/contact";
+
+const socialIcons = [
+  { key: "facebook", label: "Facebook", icon: Facebook },
+  { key: "instagram", label: "Instagram", icon: Instagram },
+  { key: "linkedin", label: "LinkedIn", icon: Linkedin },
+  { key: "youtube", label: "YouTube", icon: Youtube },
+] as const;
 
 export function SiteFooter() {
   const [details, setDetails] = useState(contactDetails);
@@ -21,9 +29,30 @@ export function SiteFooter() {
             className="h-16 w-auto max-w-[300px] object-contain"
           />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-            Hand-crafted sofas made to order in our atelier. Sustainable materials, lifetime frames,
-            and a quiet sense of luxury.
+            {details.footerText}
           </p>
+          {socialIcons.some((social) => details.socialLinks[social.key]) && (
+            <div className="mt-6 flex flex-wrap gap-3">
+              {socialIcons.map((social) => {
+                const href = details.socialLinks[social.key];
+                const Icon = social.icon;
+                if (!href) return null;
+
+                return (
+                  <a
+                    key={social.key}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.label}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-white/15 text-white/72 transition-colors hover:border-primary hover:text-primary"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
+            </div>
+          )}
         </div>
         <div>
           <p className="eyebrow text-primary">Explore</p>
