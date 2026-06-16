@@ -13,7 +13,7 @@ type ImageUploadFieldProps = {
   label: string;
   value: string;
   onChange: (url: string) => void;
-  folder: "hero" | "about" | "products" | "logos";
+  folder: "hero" | "about" | "products" | "logos" | "collection";
   required?: boolean;
   placeholder?: string;
   hint?: string;

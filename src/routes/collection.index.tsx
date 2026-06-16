@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { getPublicImageUrl } from "@/lib/images";
+import heroSofaDefault from "@/assets/hero-sofa.jpg";
 import { ArrowUpRight, Loader2 } from "lucide-react";
 import { normalizeCollection, productCollections } from "@/lib/collections";
 
@@ -46,6 +47,8 @@ function CollectionPage() {
     content?.collection_description ||
     "Every model is available in over 80 fabrics and leathers, with custom dimensions on request. Pieces ship in 8–16 weeks.";
 
+  const collectionImage = content?.collection_image || heroSofaDefault;
+
   const productsByCollection = productCollections.map((collection) => ({
     ...collection,
     products: products.filter(
@@ -58,19 +61,47 @@ function CollectionPage() {
   );
 
   return (
-    <div className="bg-background pt-32 pb-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <header className="max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold">
-            The Collection
-          </p>
-          <h1 className="mt-8 font-display text-4xl leading-[1.1] text-foreground sm:text-5xl lg:text-6xl">
-            {collectionTitle}
-          </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-[#555555]">
-            {collectionDescription}
-          </p>
-        </header>
+    <div className="bg-background pb-24">
+      <section className="relative isolate overflow-hidden border-b border-primary/15">
+        <img
+          src={getPublicImageUrl(collectionImage)}
+          alt="Colne Sofa LTD collection"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/92 to-background/25" />
+        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:px-10 lg:py-32">
+          <header className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              The Collection
+            </p>
+            <h1 className="mt-6 font-display text-4xl leading-[1.1] text-foreground sm:text-5xl lg:text-6xl">
+              {collectionTitle}
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-[#555555] sm:text-lg">
+              {collectionDescription}
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/quote"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-primary px-6 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-accent sm:px-7 sm:tracking-[0.2em]"
+              >
+                Request a Quote
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/repair-request"
+                className="inline-flex items-center justify-center rounded-sm bg-secondary px-6 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-secondary-foreground transition-colors hover:bg-[#142857] sm:px-7 sm:tracking-[0.2em]"
+              >
+                Repair Request
+              </Link>
+            </div>
+          </header>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-7xl px-6 pt-20 lg:px-10">
 
         {totalProducts > 0 ? (
           <div className="mt-20 space-y-20">

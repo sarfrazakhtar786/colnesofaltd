@@ -145,6 +145,7 @@ Today we continued polishing the Colne Sofa LTD website after the Vercel deploym
 - Added homepage trust points below the hero for UK-made quality, custom sizes, and premium materials.
 - Updated the footer to use the real Colne Sofa LTD logo image instead of a text-only wordmark.
 - Changed the homepage hero secondary CTA from `Request a Custom Quote` to `Repair Request` and linked it to `/repair-request`.
+- Added an admin-editable collection hero image and visual hero section on `/collection` with quote and repair CTAs.
 
 ### Admin security
 

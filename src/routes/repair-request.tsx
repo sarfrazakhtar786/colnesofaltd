@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase";
 
 const BUCKET_NAME = "site-images";
 
-const repairIssues = [
+const defaultRepairIssues = [
   "Fabric tear",
   "Cushion sagging",
   "Frame issue",
@@ -35,13 +35,32 @@ export const Route = createFileRoute("/repair-request")({
 
 function RepairRequestPage() {
   const [details, setDetails] = useState(contactDetails);
+  const [repairIssues, setRepairIssues] = useState(defaultRepairIssues);
   const [sent, setSent] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
   const [photoUploading, setPhotoUploading] = useState(false);
   const [photoError, setPhotoError] = useState("");
 
   useEffect(() => {
-    fetchContactDetails().then(setDetails);
+    async function loadPageSettings() {
+      const [contactData, contentRes] = await Promise.all([
+        fetchContactDetails(),
+        supabase.from("site_settings").select("value").eq("key", "site_content").single(),
+      ]);
+      setDetails(contactData);
+
+      const dynamicIssues = contentRes.data?.value?.repair_issues;
+      if (Array.isArray(dynamicIssues)) {
+        const cleanedIssues = dynamicIssues
+          .map((issue: unknown) => String(issue || "").trim())
+          .filter(Boolean);
+        if (cleanedIssues.length > 0) {
+          setRepairIssues(cleanedIssues);
+        }
+      }
+    }
+
+    loadPageSettings();
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

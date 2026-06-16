@@ -23,6 +23,16 @@ import {
   fetchContactDetails,
 } from "@/lib/contact";
 
+const defaultRepairIssues = [
+  "Fabric tear",
+  "Cushion sagging",
+  "Frame issue",
+  "Recliner / mechanism issue",
+  "Stitching issue",
+  "Foam replacement",
+  "Other",
+];
+
 const defaultContent = {
   hero_title: "Sofas built the slow way, to be lived in for decades.",
   hero_subtitle:
@@ -32,6 +42,7 @@ const defaultContent = {
   collection_title: "Six silhouettes, infinite combinations.",
   collection_description:
     "Every model is available in over 80 fabrics and leathers, with custom dimensions on request. Pieces ship in 8-16 weeks.",
+  collection_image: "",
   about_hero_title: "Built in Britain, made for homes that are lived in.",
   about_hero_subtitle:
     "Colne Sofa LTD is a UK-based furniture workshop specialising in made-to-order sofas, beds, and repair work. From our Colne base, we combine careful upholstery, durable materials, and practical service for homes across the UK.",
@@ -50,6 +61,7 @@ const defaultContent = {
       d: "An average sofa takes 84 hours of work and twelve weeks of patience. We won't ship anything before it's right.",
     },
   ],
+  repair_issues: defaultRepairIssues,
 };
 
 export const Route = createFileRoute("/admin/content/")({
@@ -78,6 +90,11 @@ function AdminContent() {
         ...defaultContent,
         ...data.value,
         values: Array.isArray(data.value.values) ? data.value.values : defaultContent.values,
+        repair_issues: Array.isArray(data.value.repair_issues)
+          ? data.value.repair_issues
+              .map((issue: unknown) => String(issue || "").trim())
+              .filter(Boolean)
+          : defaultContent.repair_issues,
       });
     }
     setContact(contactData);
@@ -190,6 +207,26 @@ function AdminContent() {
                   rows={4}
                 />
               </div>
+              <div className="grid gap-2 border-t pt-5">
+                <Label>Repair Issue List (Repair Request Form)</Label>
+                <p className="text-xs text-muted-foreground">
+                  Add one repair issue per line. This updates the issue dropdown in the public repair
+                  request form.
+                </p>
+                <Textarea
+                  value={Array.isArray(content.repair_issues) ? content.repair_issues.join("\n") : ""}
+                  onChange={(e) =>
+                    setContent({
+                      ...content,
+                      repair_issues: e.target.value
+                        .split("\n")
+                        .map((issue) => issue.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  rows={7}
+                />
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -217,6 +254,15 @@ function AdminContent() {
                   rows={3}
                 />
               </div>
+              <ImageUploadField
+                id="collection_image"
+                label="Collection Hero Image URL"
+                value={content.collection_image}
+                onChange={(collection_image) => setContent({ ...content, collection_image })}
+                folder="collection"
+                hint="Recommended: 2400 x 1350 px or larger, landscape 16:9."
+                aspect="hero"
+              />
             </CardContent>
           </Card>
         </TabsContent>
@@ -486,7 +532,20 @@ function ContentPreviewDialog({
 
           <div className="grid gap-6 lg:grid-cols-2">
             <section className="rounded-sm border bg-card p-6">
-              <p className="eyebrow">Collection Header</p>
+              <div className="overflow-hidden rounded-sm border bg-muted">
+                {content.collection_image ? (
+                  <img
+                    src={getPublicImageUrl(content.collection_image)}
+                    alt="Collection preview"
+                    className="aspect-[16/9] h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex aspect-[16/9] items-center justify-center text-sm text-muted-foreground">
+                    No collection hero image selected
+                  </div>
+                )}
+              </div>
+              <p className="eyebrow mt-5">Collection Header</p>
               <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
                 {content.collection_title || "Untitled collection"}
               </h2>
