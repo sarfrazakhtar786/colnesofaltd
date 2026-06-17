@@ -62,6 +62,17 @@ const defaultContent = {
     },
   ],
   repair_issues: defaultRepairIssues,
+  craftsmanship_eyebrow: "Craftsmanship",
+  craftsmanship_title: "Fourteen pairs of hands.",
+  craftsmanship_title_accent: "One sofa at a time.",
+  craftsmanship_description:
+    "From the first cut of beech to the final hand-stitched seam, every Colne Sofa LTD sofa passes through fourteen artisans over an average of 84 hours of work.",
+  craftsmanship_image: "",
+  craftsmanship_stats: [
+    { label: "Founded", value: "1978" },
+    { label: "Pieces / year", value: "400" },
+    { label: "Frame warranty", value: "Life" },
+  ],
 };
 
 export const Route = createFileRoute("/admin/content/")({
@@ -95,6 +106,12 @@ function AdminContent() {
               .map((issue: unknown) => String(issue || "").trim())
               .filter(Boolean)
           : defaultContent.repair_issues,
+        craftsmanship_stats: Array.isArray(data.value.craftsmanship_stats)
+          ? data.value.craftsmanship_stats.map((stat: { label?: string; value?: string }) => ({
+              label: String(stat?.label || "").trim(),
+              value: String(stat?.value || "").trim(),
+            }))
+          : defaultContent.craftsmanship_stats,
       });
     }
     setContact(contactData);
@@ -159,6 +176,7 @@ function AdminContent() {
       <Tabs defaultValue="home" className="space-y-6">
         <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 rounded-sm border bg-card p-2">
           <TabsTrigger value="home">Home Hero</TabsTrigger>
+          <TabsTrigger value="craftsmanship">Craftsmanship</TabsTrigger>
           <TabsTrigger value="collection">Collection</TabsTrigger>
           <TabsTrigger value="about">About Page</TabsTrigger>
           <TabsTrigger value="values">Values</TabsTrigger>
@@ -226,6 +244,96 @@ function AdminContent() {
                   }
                   rows={7}
                 />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="craftsmanship" className="mt-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Home Page - Craftsmanship Section</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid gap-2">
+                <Label>Eyebrow Label</Label>
+                <Input
+                  value={content.craftsmanship_eyebrow}
+                  onChange={(e) =>
+                    setContent({ ...content, craftsmanship_eyebrow: e.target.value })
+                  }
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>Main Title</Label>
+                <Input
+                  value={content.craftsmanship_title}
+                  onChange={(e) => setContent({ ...content, craftsmanship_title: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>Accent Title (italic line)</Label>
+                <Input
+                  value={content.craftsmanship_title_accent}
+                  onChange={(e) =>
+                    setContent({ ...content, craftsmanship_title_accent: e.target.value })
+                  }
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>Description</Label>
+                <Textarea
+                  value={content.craftsmanship_description}
+                  onChange={(e) =>
+                    setContent({ ...content, craftsmanship_description: e.target.value })
+                  }
+                  rows={4}
+                />
+              </div>
+              <ImageUploadField
+                id="craftsmanship_image"
+                label="Section Image URL"
+                value={content.craftsmanship_image}
+                onChange={(craftsmanship_image) =>
+                  setContent({ ...content, craftsmanship_image })
+                }
+                folder="craftsmanship"
+                hint="Recommended: portrait 4:5 ratio, e.g. 1280 x 1600 px."
+              />
+              <div className="space-y-4 border-t pt-5">
+                <Label>Stats (3 columns on homepage)</Label>
+                {content.craftsmanship_stats.map((stat, index) => (
+                  <div key={index} className="grid gap-3 rounded-md border p-4 sm:grid-cols-2">
+                    <div className="grid gap-2">
+                      <Label>Stat {index + 1} Label</Label>
+                      <Input
+                        value={stat.label}
+                        onChange={(e) => {
+                          const craftsmanship_stats = [...content.craftsmanship_stats];
+                          craftsmanship_stats[index] = {
+                            ...craftsmanship_stats[index],
+                            label: e.target.value,
+                          };
+                          setContent({ ...content, craftsmanship_stats });
+                        }}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label>Stat {index + 1} Value</Label>
+                      <Input
+                        value={stat.value}
+                        onChange={(e) => {
+                          const craftsmanship_stats = [...content.craftsmanship_stats];
+                          craftsmanship_stats[index] = {
+                            ...craftsmanship_stats[index],
+                            value: e.target.value,
+                          };
+                          setContent({ ...content, craftsmanship_stats });
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -624,6 +732,49 @@ function ContentPreviewDialog({
                     No about image selected
                   </div>
                 )}
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-sm border bg-card p-6">
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="overflow-hidden rounded-sm border bg-muted">
+                {content.craftsmanship_image ? (
+                  <img
+                    src={getPublicImageUrl(content.craftsmanship_image)}
+                    alt="Craftsmanship preview"
+                    className="aspect-[4/5] h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex aspect-[4/5] items-center justify-center text-sm text-muted-foreground">
+                    No craftsmanship image selected
+                  </div>
+                )}
+              </div>
+              <div>
+                <p className="eyebrow">{content.craftsmanship_eyebrow || "Craftsmanship"}</p>
+                <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
+                  {content.craftsmanship_title || "Untitled craftsmanship section"}
+                  {content.craftsmanship_title_accent && (
+                    <>
+                      <br />
+                      <span className="italic text-primary">{content.craftsmanship_title_accent}</span>
+                    </>
+                  )}
+                </h2>
+                <p className="mt-4 leading-relaxed text-[#555555]">
+                  {content.craftsmanship_description || "No craftsmanship description entered yet."}
+                </p>
+                <dl className="mt-6 grid gap-4 sm:grid-cols-3">
+                  {content.craftsmanship_stats.map((stat, index) => (
+                    <div key={index}>
+                      <dt className="text-xs uppercase tracking-widest text-muted-foreground">
+                        {stat.label || `Stat ${index + 1}`}
+                      </dt>
+                      <dd className="mt-2 font-display text-2xl">{stat.value || "—"}</dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             </div>
           </section>

@@ -72,6 +72,20 @@ function HomePage() {
     content?.hero_subtitle ||
     "Each piece is made with care, practical comfort, and dimensions tailored for your home. Custom sofas, beds, and repair support across the UK.";
   const heroImage = content?.hero_image || heroSofaDefault;
+  const craftsmanshipImage = content?.craftsmanship_image || craftsman;
+  const craftsmanshipEyebrow = content?.craftsmanship_eyebrow || "Craftsmanship";
+  const craftsmanshipTitle = content?.craftsmanship_title || "Fourteen pairs of hands.";
+  const craftsmanshipTitleAccent = content?.craftsmanship_title_accent || "One sofa at a time.";
+  const craftsmanshipDescription =
+    content?.craftsmanship_description ||
+    "From the first cut of beech to the final hand-stitched seam, every Colne Sofa LTD sofa passes through fourteen artisans over an average of 84 hours of work.";
+  const craftsmanshipStats = Array.isArray(content?.craftsmanship_stats)
+    ? content.craftsmanship_stats
+    : [
+        { label: "Founded", value: "1978" },
+        { label: "Pieces / year", value: "400" },
+        { label: "Frame warranty", value: "Life" },
+      ];
 
   return (
     <>
@@ -246,7 +260,7 @@ function HomePage() {
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <div className="aspect-[4/5] overflow-hidden">
             <img
-              src={craftsman}
+              src={getPublicImageUrl(craftsmanshipImage)}
               alt="A craftsman hand-stitching a sofa cushion in the workshop"
               width={1280}
               height={1024}
@@ -255,33 +269,28 @@ function HomePage() {
             />
           </div>
           <div>
-            <p className="eyebrow">Craftsmanship</p>
+            <p className="eyebrow">{craftsmanshipEyebrow}</p>
             <h2 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">
-              Fourteen pairs of hands.
-              <br />
-              <span className="italic text-primary">One sofa at a time.</span>
+              {craftsmanshipTitle}
+              {craftsmanshipTitleAccent && (
+                <>
+                  <br />
+                  <span className="italic text-primary">{craftsmanshipTitleAccent}</span>
+                </>
+              )}
             </h2>
             <p className="mt-6 text-pretty leading-relaxed text-[#555555]">
-              From the first cut of beech to the final hand-stitched seam, every Colne Sofa LTD sofa
-              passes through fourteen artisans over an average of 84 hours of work.
+              {craftsmanshipDescription}
             </p>
             <dl className="mt-10 grid gap-6 border-t border-border/60 pt-8 sm:grid-cols-3">
-              <div>
-                <dt className="text-xs uppercase tracking-widest text-muted-foreground">Founded</dt>
-                <dd className="mt-2 font-display text-3xl">1978</dd>
-              </div>
-              <div>
-                <dt className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Pieces / year
-                </dt>
-                <dd className="mt-2 font-display text-3xl">400</dd>
-              </div>
-              <div>
-                <dt className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Frame warranty
-                </dt>
-                <dd className="mt-2 font-display text-3xl">Life</dd>
-              </div>
+              {craftsmanshipStats.map((stat: { label?: string; value?: string }, index: number) => (
+                <div key={`${stat.label}-${index}`}>
+                  <dt className="text-xs uppercase tracking-widest text-muted-foreground">
+                    {stat.label}
+                  </dt>
+                  <dd className="mt-2 font-display text-3xl">{stat.value}</dd>
+                </div>
+              ))}
             </dl>
           </div>
         </div>
