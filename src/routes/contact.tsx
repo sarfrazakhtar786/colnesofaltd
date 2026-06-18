@@ -22,6 +22,7 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const [details, setDetails] = useState(contactDetails);
   const [sent, setSent] = useState(false);
+  const phoneNumbers = [details.phoneDisplay, ...details.additionalPhones].filter(Boolean);
 
   useEffect(() => {
     fetchContactDetails().then((nextDetails) => {
@@ -105,12 +106,16 @@ function ContactPage() {
           </div>
           <div>
             <p className="eyebrow">Phone</p>
-            <p className="mt-3 flex items-center gap-3 text-[#555555]">
+            <div className="mt-3 flex items-start gap-3 text-[#555555]">
               <Phone className="h-5 w-5 text-primary" />
-              <a href={details.phoneHref} className="hover:text-primary">
-                {details.phoneDisplay}
-              </a>
-            </p>
+              <div className="space-y-1">
+                {phoneNumbers.map((phone) => (
+                  <a key={phone} href={getPhoneHref(phone)} className="block hover:text-primary">
+                    {phone}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </aside>
 

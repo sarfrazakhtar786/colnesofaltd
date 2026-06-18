@@ -2,6 +2,7 @@ export type ContactDetails = {
   addressLines: string[];
   email: string;
   phoneDisplay: string;
+  additionalPhones: string[];
   whatsappNumber: string;
   hours: string;
   footerText: string;
@@ -17,6 +18,7 @@ export const defaultContactDetails: ContactDetails = {
   addressLines: ["Colne Sofa LTD", "Unit 5 Priverside Mil", "Greenfield Road", "BB8 9PE"],
   email: "colnesofaltd@gmail.com",
   phoneDisplay: "07417 556531",
+  additionalPhones: ["", "", ""],
   whatsappNumber: "447417556531",
   hours: "Mon-Sat 10:00 - 18:00",
   footerText:
@@ -53,6 +55,9 @@ export function normalizeContactDetails(value: Partial<ContactDetails> | null | 
       Array.isArray(value?.addressLines) && value.addressLines.length > 0
         ? value.addressLines
         : defaultContactDetails.addressLines,
+    additionalPhones: Array.from({ length: 3 }, (_, index) =>
+      String(value?.additionalPhones?.[index] || "").trim(),
+    ),
   };
 }
 

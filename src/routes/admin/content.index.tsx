@@ -138,6 +138,15 @@ function AdminContent() {
     setContact((current) => ({ ...current, [key]: value }));
   }
 
+  function updateAdditionalPhone(index: number, value: string) {
+    setContact((current) => {
+      const additionalPhones = Array.from({ length: 3 }, (_, phoneIndex) =>
+        phoneIndex === index ? value : current.additionalPhones[phoneIndex] || "",
+      );
+      return { ...current, additionalPhones };
+    });
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center p-12">
@@ -467,6 +476,18 @@ function AdminContent() {
                   />
                 </div>
               </div>
+              <div className="grid gap-5 border-t pt-5 sm:grid-cols-3">
+                {contact.additionalPhones.map((phone, index) => (
+                  <div key={index} className="grid gap-2">
+                    <Label>Additional Phone {index + 1}</Label>
+                    <Input
+                      value={phone}
+                      onChange={(e) => updateAdditionalPhone(index, e.target.value)}
+                      placeholder="Optional phone number"
+                    />
+                  </div>
+                ))}
+              </div>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="grid gap-2">
                   <Label>WhatsApp Number</Label>
@@ -596,6 +617,8 @@ function ContentPreviewDialog({
   content: typeof defaultContent;
   contact: ContactDetails;
 }) {
+  const phoneNumbers = [contact.phoneDisplay, ...contact.additionalPhones].filter(Boolean);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92vh] max-w-6xl overflow-y-auto">
@@ -679,10 +702,14 @@ function ContentPreviewDialog({
                   <Mail className="h-4 w-4 shrink-0 text-primary" />
                   {contact.email}
                 </p>
-                <p className="flex items-center gap-3">
+                <div className="flex items-start gap-3">
                   <Phone className="h-4 w-4 shrink-0 text-primary" />
-                  {contact.phoneDisplay}
-                </p>
+                  <div className="space-y-1">
+                    {phoneNumbers.map((phone) => (
+                      <p key={phone}>{phone}</p>
+                    ))}
+                  </div>
+                </div>
                 <p className="text-muted-foreground">{contact.hours}</p>
                 <div className="border-t pt-3">
                   <p className="font-medium text-secondary">Footer paragraph</p>

@@ -12,6 +12,7 @@ const socialIcons = [
 
 export function SiteFooter() {
   const [details, setDetails] = useState(contactDetails);
+  const phoneNumbers = [details.phoneDisplay, ...details.additionalPhones].filter(Boolean);
 
   useEffect(() => {
     fetchContactDetails().then((nextDetails) => {
@@ -90,11 +91,13 @@ export function SiteFooter() {
                 {details.email}
               </a>
             </li>
-            <li>
-              <a href={details.phoneHref} className="transition-colors hover:text-primary">
-                {details.phoneDisplay}
-              </a>
-            </li>
+            {phoneNumbers.map((phone) => (
+              <li key={phone}>
+                <a href={getPhoneHref(phone)} className="transition-colors hover:text-primary">
+                  {phone}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
