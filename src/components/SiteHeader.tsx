@@ -22,7 +22,7 @@ export function SiteHeader() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-10 md:flex">
+        <nav className="hidden items-center gap-10 lg:flex">
           {links.map((l) => (
             <Link
               key={l.to}
@@ -36,20 +36,28 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <Link
-          to="/quote"
-          className="hidden rounded-sm bg-primary px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground transition-colors hover:bg-accent md:inline-block"
-        >
-          Request Quote
-        </Link>
+        <div className="hidden items-center gap-2 lg:flex">
+          <Link
+            to="/repair-request"
+            className="rounded-sm bg-primary px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground transition-colors hover:bg-accent"
+          >
+            Repair Request
+          </Link>
+          <Link
+            to="/quote"
+            className="rounded-sm bg-primary px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-primary-foreground transition-colors hover:bg-accent"
+          >
+            Request Quote
+          </Link>
+        </div>
 
-        <button className="text-white md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+        <button className="text-white lg:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {open && (
-        <div className="border-t border-primary/25 bg-secondary md:hidden">
+        <div className="border-t border-primary/25 bg-secondary lg:hidden">
           <nav className="flex flex-col px-6 py-4">
             {links.map((l) => (
               <Link
@@ -62,9 +70,16 @@ export function SiteHeader() {
               </Link>
             ))}
             <Link
-              to="/quote"
+              to="/repair-request"
               onClick={() => setOpen(false)}
               className="mt-3 rounded-sm bg-primary px-5 py-3 text-center text-xs font-semibold uppercase tracking-widest text-primary-foreground"
+            >
+              Repair Request
+            </Link>
+            <Link
+              to="/quote"
+              onClick={() => setOpen(false)}
+              className="mt-2 rounded-sm bg-primary px-5 py-3 text-center text-xs font-semibold uppercase tracking-widest text-primary-foreground"
             >
               Request Quote
             </Link>
